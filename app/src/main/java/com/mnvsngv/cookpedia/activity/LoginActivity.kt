@@ -1,5 +1,6 @@
 package com.mnvsngv.cookpedia.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -25,7 +26,9 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener {
         }
 
         registerButton.setOnClickListener {
+            val registerIntent = Intent(this, RegisterActivity::class.java)
             Toast.makeText(this, "Register", Toast.LENGTH_SHORT).show()
+            startActivity(registerIntent)
         }
 
         // Initiate login when the user presses enter when on the password field
