@@ -1,23 +1,28 @@
 package com.mnvsngv.cookpedia.backend
 
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.mnvsngv.cookpedia.DataClass.UserItem
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
-    override fun getAuthInstance(): FirebaseAuth {
+    fun getAuthInstance(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
 
-    override fun getDbInstance(): FirebaseDatabase {
+    fun getDbInstance(): FirebaseDatabase {
         return FirebaseDatabase.getInstance()
     }
 
-    fun getUserRef(): DatabaseReference {
-        return getDbInstance().getReference("USER_DETAILS")
+    override fun updateUserDetails(userMap: HashMap<String, Any>, user_id:String) {
+        val userRef = getDbInstance().getReference("USER_DETAILS")
+
+        val childUpdates = HashMap<String, Any>()
+        childUpdates[user_id] = userMap
+
+        userRef.updateChildren()
     }
 
     fun authenticateUser(email: String, password: String) {
@@ -27,11 +32,12 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
                 Log.d("auth", "createUserWithEmail:success")
                 val user = getAuthInstance().currentUser
                 val user_id = user?.uid
-                backendListener.updateUserDetails(user_id)
+                val userMap =  backendListener.getUserDetails(user_id)
+                updateUserDetails(userMap, user_id)
             }
             else {
                 Log.w("db", "createUserWithEmail:failure", task.exception)
-                backendListener.updateUserDetails(null)
+                updateUserDetails(null)
             }
         }
     }

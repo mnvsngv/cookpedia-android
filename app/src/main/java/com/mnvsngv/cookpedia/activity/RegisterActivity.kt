@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
+import com.mnvsngv.cookpedia.DataClass.UserItem
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.singleton.BackendFactory
@@ -17,7 +18,7 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
         setContentView(R.layout.activity_register)
 
         //TODO
-        val backend =  BackendFactory.getInstance(this)
+        val backend = BackendFactory.getInstance(this)
         loginButton.setOnClickListener {
             val loginIntent = Intent(this, LoginActivity::class.java)
             Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
@@ -50,20 +51,19 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
                 || TextUtils.isEmpty(passwordInput.text))
     }
 
-    override fun updateUserDetails(user_id: String?) {
-        if(user_id == null) {
+    override fun getUserDetails(user_id: String?): HashMap<String, Any> {
+        if (user_id == null) {
             Toast.makeText(
                 this, "Authentication failed.", Toast.LENGTH_SHORT
             ).show()
-        } else {
-
-            val map: HashMap<String, Any> = hashMapOf(
-                "id" to user_id.toString(),
-                "fullname" to fullname,
-                "username" to username,
-                "password" to passwordInput,
-                "email" to emailInput
-            )
         }
+        val map: HashMap<String, Any> = hashMapOf(
+            "id" to user_id.toString(),
+            "fullname" to fullname,
+            "username" to username,
+            "password" to passwordInput,
+            "email" to emailInput
+        )
+        return map
     }
 }

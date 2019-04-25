@@ -5,6 +5,6 @@ import com.google.firebase.database.FirebaseDatabase
 
 interface Backend {
 
-    fun getAuthInstance(): FirebaseAuth
-    fun getDbInstance(): FirebaseDatabase
+    fun updateUserDetails(userMap: HashMap<String, Any>, user_id:String)
+
 }

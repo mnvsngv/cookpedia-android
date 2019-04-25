@@ -1,5 +1,7 @@
 package com.mnvsngv.cookpedia.backend
 
+import com.mnvsngv.cookpedia.DataClass.UserItem
+
 interface BackendListener {
-    fun updateUserDetails(user_id: String?)
+    fun getUserDetails(user_id: String?): HashMap<String, Any>
 }
