@@ -11,4 +11,12 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+    <string name="welcome_text">Login to</string>
+    <string name="cookpedia_text">Cookpedia</string>
+    <string name="email_hint">Email…</string>
+    <string name="password_hint">Password…</string>
+    <string name="login_button_text">Login</string>
+    <string name="register_button_text">Register</string>
+    <string name="invalid_email">Please enter a valid email!</string>
+    <string name="invalid_password">Please enter your password!</string>
 </resources>
