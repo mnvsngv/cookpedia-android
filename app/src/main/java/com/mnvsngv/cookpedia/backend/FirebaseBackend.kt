@@ -2,9 +2,7 @@ package com.mnvsngv.cookpedia.backend
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.mnvsngv.cookpedia.DataClass.UserItem
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
@@ -16,16 +14,25 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         return FirebaseDatabase.getInstance()
     }
 
-    override fun updateUserDetails(userMap: HashMap<String, Any>, user_id:String) {
+    override fun updateUserDetails(userMap: HashMap<String, Any>, user_id: String?) {
         val userRef = getDbInstance().getReference("USER_DETAILS")
 
         val childUpdates = HashMap<String, Any>()
-        childUpdates[user_id] = userMap
+        user_id?.let { childUpdates[it] = userMap }
 
-        userRef.updateChildren()
+        userRef.updateChildren(childUpdates).addOnCompleteListener {task ->
+
+            if (task.isSuccessful) {
+                // Once the user is successfully registered, the InstaPost activity is launched where the registered user can
+                // view all the posts in the Instapost application uploaded by every user
+                backendListener.loadCookpediaHome()
+            } else {
+                backendListener.displayRegistrationErr()
+            }
+            }
     }
 
-    fun authenticateUser(email: String, password: String) {
+    override fun authenticateUser(email: String, password: String) {
         getAuthInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener() { task->
 
             if(task.isSuccessful) {
@@ -37,12 +44,8 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
             }
             else {
                 Log.w("db", "createUserWithEmail:failure", task.exception)
-                updateUserDetails(null)
+                backendListener.displayRegistrationErr()
             }
         }
-    }
-
-    fun addUser(map: HashMap<String, Any>) {
-
     }
 }

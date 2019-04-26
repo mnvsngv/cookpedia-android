@@ -19,6 +19,8 @@
     <string name="register_button_text">Register</string>
     <string name="invalid_email">Please enter a valid email!</string>
     <string name="invalid_password">Please enter your password!</string>
+    <string name="invalid_username">Please enter a valid username!</string>
+    <string name="invalid_fullname">Please enter a valid fullname!</string>
     <string name="welcome_text_register">Register to</string>
     <string name="username">Username</string>
     <string name="fullname">Fullname</string>
