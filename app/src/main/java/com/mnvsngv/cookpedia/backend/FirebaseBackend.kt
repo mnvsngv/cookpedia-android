@@ -6,16 +6,11 @@ import com.google.firebase.database.FirebaseDatabase
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
-    fun getAuthInstance(): FirebaseAuth {
-        return FirebaseAuth.getInstance()
-    }
-
-    fun getDbInstance(): FirebaseDatabase {
-        return FirebaseDatabase.getInstance()
-    }
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseDatabase.getInstance()
 
     override fun updateUserDetails(userMap: HashMap<String, Any>, user_id: String?) {
-        val userRef = getDbInstance().getReference("USER_DETAILS")
+        val userRef = db.getReference("USER_DETAILS")
 
         val childUpdates = HashMap<String, Any>()
         user_id?.let { childUpdates[it] = userMap }
@@ -29,18 +24,30 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
             } else {
                 backendListener.displayRegistrationErr()
             }
-            }
+        }
     }
 
-    override fun authenticateUser(email: String, password: String) {
-        getAuthInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener() { task->
+    override fun loginUser(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
+            if(task.isSuccessful) {
+                Log.d("auth", "createUserWithEmail:success")
+                backendListener.onLoginSuccess()
+            }
+            else {
+                Log.w("db", "createUserWithEmail:failure", task.exception)
+                backendListener.displayRegistrationErr()
+            }
+        }
+    }
+
+    override fun registerUser(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task->
 
             if(task.isSuccessful) {
                 Log.d("auth", "createUserWithEmail:success")
-                val user = getAuthInstance().currentUser
+                val user = auth.currentUser
                 val user_id = user?.uid
-                val userMap =  backendListener.getUserDetails(user_id)
-                updateUserDetails(userMap, user_id)
+                backendListener.getUserDetails(user_id)
             }
             else {
                 Log.w("db", "createUserWithEmail:failure", task.exception)

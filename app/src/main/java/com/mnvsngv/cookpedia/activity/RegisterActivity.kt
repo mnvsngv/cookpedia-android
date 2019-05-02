@@ -1,14 +1,13 @@
 package com.mnvsngv.cookpedia.activity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import com.mnvsngv.cookpedia.DataClass.UserItem
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.Backend
 import com.mnvsngv.cookpedia.backend.BackendListener
@@ -45,7 +44,7 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
     }
 
     private fun register(email: String, password: String) {
-        backend.authenticateUser(email, password)
+        backend.registerUser(email, password)
     }
 
     private fun areInputsValid(): Boolean {
@@ -82,7 +81,7 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
 
 
     // Return a map of User Details to the backend
-    override fun getUserDetails(user_id: String?): HashMap<String, Any> {
+    override fun getUserDetails(user_id: String?) {
         if (user_id == null) {
             Toast.makeText(
                 this, "Authentication failed.", Toast.LENGTH_SHORT
@@ -95,7 +94,8 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
             "password" to passwordInput.text.toString(),
             "email" to emailInput.text.toString()
         )
-        return map
+        backend.updateUserDetails(map, user_id)
+//        return map
     }
 
     override fun loadCookpediaHome() {

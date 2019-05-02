@@ -6,14 +6,16 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.KeyEvent
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import android.widget.Toast
 import com.mnvsngv.cookpedia.R
+import com.mnvsngv.cookpedia.backend.BackendListener
+import com.mnvsngv.cookpedia.singleton.BackendFactory
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener {
+class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, BackendListener {
+
+    private val backend = BackendFactory.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,13 +23,12 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener {
 
         loginButton.setOnClickListener {
             if (areInputsValid()) {
-                Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
+                backend.loginUser(emailInput.text.toString(), passwordInput.text.toString())
             }
         }
 
         registerButton.setOnClickListener {
             val registerIntent = Intent(this, RegisterActivity::class.java)
-            Toast.makeText(this, "Register", Toast.LENGTH_SHORT).show()
             startActivity(registerIntent)
         }
 
@@ -38,11 +39,18 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener {
     // Handle ENTER button pressed on the password field
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_GO) {
-            Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
+            if (areInputsValid()) {
+                backend.loginUser(emailInput.text.toString(), passwordInput.text.toString())
+            }
             return true  // Event handled!
         }
 
         return false  // Event not handled!
+    }
+
+    override fun onLoginSuccess() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 
 
