@@ -1,9 +1,9 @@
 package com.mnvsngv.cookpedia.backend
 
-import com.mnvsngv.cookpedia.DataClass.UserItem
-
 interface BackendListener {
-    fun getUserDetails(user_id: String?): HashMap<String, Any>
-    fun loadCookpediaHome()
-    fun displayRegistrationErr()
+    fun getUserDetails(user_id: String) {}
+    fun loadCookpediaHome() {}
+    fun displayRegistrationErr() {}
+    fun onLoginSuccess() {}
+    fun onRegisterSuccess() {}
 }

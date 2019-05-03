@@ -2,45 +2,50 @@ package com.mnvsngv.cookpedia.backend
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.mnvsngv.cookpedia.dataclass.User
+
+private const val USERS_COLLECTION = "Users"
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
-    fun getAuthInstance(): FirebaseAuth {
-        return FirebaseAuth.getInstance()
-    }
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
 
-    fun getDbInstance(): FirebaseDatabase {
-        return FirebaseDatabase.getInstance()
-    }
-
-    override fun updateUserDetails(userMap: HashMap<String, Any>, user_id: String?) {
-        val userRef = getDbInstance().getReference("USER_DETAILS")
-
-        val childUpdates = HashMap<String, Any>()
-        user_id?.let { childUpdates[it] = userMap }
-
-        userRef.updateChildren(childUpdates).addOnCompleteListener {task ->
-
-            if (task.isSuccessful) {
-                // Once the user is successfully registered, the InstaPost activity is launched where the registered user can
-                // view all the posts in the Instapost application uploaded by every user
+    override fun updateUserDetails(user: User, user_id: String) {
+        db.collection(USERS_COLLECTION).document(user.username)
+            .set(user)
+            .addOnSuccessListener {
                 backendListener.loadCookpediaHome()
-            } else {
+            }
+    }
+
+    override fun loginUser(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
+            if(task.isSuccessful) {
+                Log.d("auth", "createUserWithEmail:success")
+                backendListener.onLoginSuccess()
+            }
+            else {
+                Log.w("db", "createUserWithEmail:failure", task.exception)
                 backendListener.displayRegistrationErr()
             }
-            }
+        }
     }
 
-    override fun authenticateUser(email: String, password: String) {
-        getAuthInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener() { task->
+    override fun registerUser(
+        email: String,
+        password: String,
+        fullName: String,
+        username: String
+    ) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task->
 
             if(task.isSuccessful) {
                 Log.d("auth", "createUserWithEmail:success")
-                val user = getAuthInstance().currentUser
-                val user_id = user?.uid
-                val userMap =  backendListener.getUserDetails(user_id)
-                updateUserDetails(userMap, user_id)
+//                val user = auth.currentUser
+//                val user_id = user?.uid
+                backendListener.onRegisterSuccess()
             }
             else {
                 Log.w("db", "createUserWithEmail:failure", task.exception)
