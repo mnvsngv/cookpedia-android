@@ -1,8 +1,10 @@
 package com.mnvsngv.cookpedia.backend
 
-interface Backend {
+import com.mnvsngv.cookpedia.dataclass.User
 
-    fun updateUserDetails(userMap: HashMap<String, Any>, user_id:String?)
-    fun registerUser(email: String, password: String)
+
+interface Backend {
+    fun updateUserDetails(user: User, user_id:String)
+    fun registerUser(email: String, password: String, fullName: String, username: String)
     fun loginUser(email: String, password: String)
 }

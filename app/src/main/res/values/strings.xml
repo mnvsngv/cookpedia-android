@@ -39,4 +39,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="welcome_text">Welcome to</string>
+    <string name="my_recipes">My Recipes</string>
+    <string name="search_recipes">Search Recipes</string>
+    <string name="add_recipe">Add Recipe</string>
 </resources>
