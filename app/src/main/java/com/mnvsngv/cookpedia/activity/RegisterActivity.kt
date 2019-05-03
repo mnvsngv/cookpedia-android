@@ -106,7 +106,7 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
         finish()
     }
 
-    override fun displayRegistrationErr() {
+    override fun onRegistrationFailure() {
         Toast.makeText(this, "User cannot be registered. Please check the details!!", Toast.LENGTH_SHORT).show()
     }
 
