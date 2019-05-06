@@ -1,11 +1,17 @@
 package com.mnvsngv.cookpedia.backend
 
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mnvsngv.cookpedia.adapter.RecipeDisplayAdapter
+import com.mnvsngv.cookpedia.dataclass.RecipeItem
+import com.mnvsngv.cookpedia.dataclass.StepsItem
 import com.mnvsngv.cookpedia.dataclass.User
 
 private const val USERS_COLLECTION = "Users"
+private const val RECIPES_COLLECTION = "Recipes"
+var recipe_list: MutableList<RecipeItem> = mutableListOf()
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
@@ -21,12 +27,11 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
     }
 
     override fun loginUser(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
-            if(task.isSuccessful) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 Log.d("auth", "createUserWithEmail:success")
                 backendListener.onLoginSuccess()
-            }
-            else {
+            } else {
                 Log.w("db", "createUserWithEmail:failure", task.exception)
                 backendListener.displayRegistrationErr()
             }
@@ -39,18 +44,35 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         fullName: String,
         username: String
     ) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task->
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
 
-            if(task.isSuccessful) {
+            if (task.isSuccessful) {
                 Log.d("auth", "createUserWithEmail:success")
 //                val user = auth.currentUser
 //                val user_id = user?.uid
                 backendListener.onRegisterSuccess()
-            }
-            else {
+            } else {
                 Log.w("db", "createUserWithEmail:failure", task.exception)
                 backendListener.displayRegistrationErr()
             }
         }
+    }
+
+    override fun readAllRecipes() : MutableList<RecipeItem> {
+        val recipe_collection = db.collection(RECIPES_COLLECTION)
+        recipe_list.clear()
+        recipe_collection.get().addOnSuccessListener { result ->
+            for (documentSnapshot in result) {
+                val steps_list = documentSnapshot.get("steps").to(StepsItem::class.java)
+                val recipe_image = documentSnapshot.get("recipe_image")
+                val recipe_name = documentSnapshot.get("name")
+
+                val recipeItem =
+                    RecipeItem(recipe_name as String, recipe_image as String, steps_list.first as ArrayList<StepsItem>)
+                    recipe_list.add(recipeItem)
+                    backendListener.notifyChange()
+            }
+        }
+        return recipe_list
     }
 }
