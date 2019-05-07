@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".fragments.RecipeListFragment"
+                                             android:id="@+id/constraintlayout">
+    <ImageView
+            android:src="@drawable/searchrecipe"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/search_recipe"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.1"
+            app:layout_constraintHeight_percent="0.1"/>
+    <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_text"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.9"
+            android:paddingTop="15dp"
+            android:id="@+id/recipelist_view"/>
+    <EditText android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:id="@+id/search_text"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintLeft_toRightOf="@+id/search_recipe"
+              app:layout_constraintWidth_percent="0.9"
+              app:layout_constraintHeight_percent="0.1"
+              android:inputType="text"/>
+
+</android.support.constraint.ConstraintLayout>
