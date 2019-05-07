@@ -1,3 +1,4 @@
 package com.mnvsngv.cookpedia.dataclass
 
-data class RecipeStep(val stepNumber: Int, val description: String)
+//Steps Item dataclass
+data class RecipeStep(val description: String = "", val imageSource: String = "", val stepNumber: Int = -1)

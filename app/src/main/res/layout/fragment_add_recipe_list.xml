@@ -6,6 +6,15 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/recipeNameInput" android:hint="@string/recipe_name_hint"
+            app:layout_constraintBottom_toTopOf="@id/list" app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" android:textSize="@dimen/recipe_name_input_size"/>
     <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
             android:name="com.mnvsngv.cookpedia.fragment.AddRecipeFragment"
@@ -13,8 +22,9 @@
             android:layout_height="0dp"
             app:layoutManager="LinearLayoutManager"
             tools:context=".fragment.AddRecipeFragment"
-            tools:listitem="@layout/fragment_add_recipe" app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="16dp" app:layout_constraintBottom_toTopOf="@id/addStepButton">
+            tools:listitem="@layout/fragment_add_recipe"
+            tools:layout_editor_absoluteX="16dp" app:layout_constraintBottom_toTopOf="@id/addStepButton"
+            app:layout_constraintTop_toBottomOf="@id/recipeNameInput">
     </android.support.v7.widget.RecyclerView>
     <Button
             android:text="@string/add_step"

@@ -1,4 +1,4 @@
-package com.mnvsngv.cookpedia.adapter
+package com.mnvsngv.cookpedia.fragment.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -32,9 +32,9 @@ class RecipeDisplayAdapter(private var context: Context?, private var recipeList
 
         val recipe = recipeList.get(position)
 
-        holder.recipeName.setText(recipe.recipe_name)
+        holder.recipeName.setText(recipe.name)
         context?.let {
-            Glide.with(it).load(recipe.recipe_image)
+            Glide.with(it).load(recipe.image)
                 .apply(
                     RequestOptions.placeholderOf(R.drawable.dish_default).override(50, 50).diskCacheStrategy(
                         DiskCacheStrategy.RESOURCE

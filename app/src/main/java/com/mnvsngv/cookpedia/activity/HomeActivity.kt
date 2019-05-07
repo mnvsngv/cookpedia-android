@@ -12,7 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.fragment.AddRecipeFragment
-import com.mnvsngv.cookpedia.fragments.RecipeListFragment
+import com.mnvsngv.cookpedia.fragment.RecipeListFragment
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
