@@ -12,7 +12,7 @@ import com.mnvsngv.cookpedia.dataclass.User
 
 private const val USERS_COLLECTION = "Users"
 private const val RECIPES_COLLECTION = "Recipes"
-var recipe_list: MutableList<RecipeItem> = mutableListOf()
+private var recipe_list: MutableList<RecipeItem> = mutableListOf()
 private lateinit var recipe_collection : Query
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
