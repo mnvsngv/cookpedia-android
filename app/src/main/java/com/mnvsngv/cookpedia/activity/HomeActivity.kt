@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import com.mnvsngv.cookpedia.R
+import com.mnvsngv.cookpedia.fragments.RecipeListFragment
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -22,11 +23,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -69,13 +65,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 // Handle the camera action
             }
-            R.id.nav_gallery -> {
+            R.id.nav_my_recipe -> {
 
             }
-            R.id.nav_slideshow -> {
-
+            R.id.nav_search_recipes -> {
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, RecipeListFragment.newInstance())
+                    .commit()
             }
-            R.id.nav_tools -> {
+            R.id.nav_add_recipe -> {
 
             }
             R.id.nav_share -> {
