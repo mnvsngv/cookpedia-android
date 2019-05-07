@@ -64,7 +64,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // Handle the camera action
             }
             R.id.nav_gallery -> {
-                replaceWithFragment(AddRecipeFragment.newInstance(1))
+                replaceWithFragment(AddRecipeFragment())
             }
             R.id.nav_slideshow -> {
 

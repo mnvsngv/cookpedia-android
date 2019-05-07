@@ -17,10 +17,16 @@
             tools:layout_editor_absoluteX="16dp" app:layout_constraintBottom_toTopOf="@id/addStepButton">
     </android.support.v7.widget.RecyclerView>
     <Button
-            android:text="Button"
+            android:text="@string/add_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/addStepButton"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/submitRecipeButton" app:layout_constraintLeft_toLeftOf="parent"/>
+    <Button
+            android:text="@string/submit_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/submitRecipeButton"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@id/addStepButton"
+            app:layout_constraintEnd_toEndOf="parent"/>
 </android.support.constraint.ConstraintLayout>
 

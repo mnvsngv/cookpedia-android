@@ -3,9 +3,11 @@ package com.mnvsngv.cookpedia.backend
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mnvsngv.cookpedia.dataclass.RecipeStep
 import com.mnvsngv.cookpedia.dataclass.User
 
 private const val USERS_COLLECTION = "Users"
+private const val RECIPES_COLLECTION = "Recipes"
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
@@ -39,5 +41,13 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
                 backendListener.onRegisterFailure()
             }
         }
+    }
+
+    override fun addRecipe(name: String, steps: List<RecipeStep>) {
+        db.collection(RECIPES_COLLECTION).document()
+            .set(object {
+                val name = ""
+                val steps = steps
+            })
     }
 }

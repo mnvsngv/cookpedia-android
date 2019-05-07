@@ -43,4 +43,6 @@
     <string name="search_recipes">Search Recipes</string>
     <string name="add_recipe">Add Recipe</string>
     <string name="step_hint">Next step</string>
+    <string name="add_step">Add Step</string>
+    <string name="submit_recipe">Submit Recipe</string>
 </resources>
