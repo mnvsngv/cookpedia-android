@@ -45,4 +45,7 @@
     <string name="step_hint">Next step</string>
     <string name="add_step">Add Step</string>
     <string name="submit_recipe">Submit Recipe</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

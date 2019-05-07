@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.fragment.AddRecipeFragment
+import com.mnvsngv.cookpedia.fragments.RecipeListFragment
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -63,13 +64,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 // Handle the camera action
             }
-            R.id.nav_gallery -> {
+            R.id.nav_my_recipe -> {
                 replaceWithFragment(AddRecipeFragment())
             }
-            R.id.nav_slideshow -> {
-
+            R.id.nav_search_recipes -> {
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, RecipeListFragment.newInstance())
+                    .commit()
             }
-            R.id.nav_tools -> {
+            R.id.nav_add_recipe -> {
 
             }
             R.id.nav_share -> {
