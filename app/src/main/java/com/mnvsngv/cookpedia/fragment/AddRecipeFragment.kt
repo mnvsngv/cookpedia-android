@@ -11,6 +11,7 @@ import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.dataclass.RecipeStep
+import com.mnvsngv.cookpedia.fragment.adapter.RecipeStepAdapter
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 
 import kotlinx.android.synthetic.main.fragment_add_recipe_list.view.*
@@ -25,6 +26,8 @@ class AddRecipeFragment : Fragment(), BackendListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_recipe_list, container, false)
+
+        addStep()
 
         // Set the adapter
         if (view.list is RecyclerView) {

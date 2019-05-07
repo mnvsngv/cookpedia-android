@@ -1,4 +1,4 @@
-package com.mnvsngv.cookpedia.fragment
+package com.mnvsngv.cookpedia.fragment.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
