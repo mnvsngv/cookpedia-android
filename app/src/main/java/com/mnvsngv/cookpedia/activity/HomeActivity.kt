@@ -65,14 +65,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // Handle the camera action
             }
             R.id.nav_my_recipe -> {
-                replaceWithFragment(AddRecipeFragment())
+
             }
             R.id.nav_search_recipes -> {
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, RecipeListFragment.newInstance())
-                    .commit()
+                replaceWithFragment(RecipeListFragment.newInstance())
             }
             R.id.nav_add_recipe -> {
-
+                replaceWithFragment(AddRecipeFragment())
             }
             R.id.nav_share -> {
 
