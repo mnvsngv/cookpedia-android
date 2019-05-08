@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:orientation="horizontal" android:id="@+id/linearLayout">
 
     <TextView
             android:id="@+id/item_number"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:textAppearance="?attr/textAppearanceListItem" android:layout_gravity="center_vertical"/>
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:gravity="center"
+            app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toLeftOf="@id/content"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"/>
 
     <EditText
             android:id="@+id/content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceListItem"
             android:inputType="textMultiLine|text"
-            android:hint="@string/step_hint" android:layout_weight="9"/>
+            android:hint="@string/step_hint"
+            app:layout_constraintLeft_toRightOf="@id/item_number" app:layout_constraintRight_toLeftOf="@id/addPhoto"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside" app:layout_constraintHorizontal_weight="8"/>
     <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_add_photo_dark"
-            android:id="@+id/addPhoto" android:layout_weight="1" android:layout_gravity="center_vertical"/>
-</LinearLayout>
+            android:id="@+id/addPhoto"
+            app:layout_constraintLeft_toRightOf="@id/content" app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_weight="1"/>
+</android.support.constraint.ConstraintLayout>
