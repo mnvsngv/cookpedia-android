@@ -16,7 +16,7 @@ import com.mnvsngv.cookpedia.singleton.BackendFactory
 
 import kotlinx.android.synthetic.main.fragment_add_recipe_list.view.*
 
-class AddRecipeFragment : Fragment(), BackendListener {
+class AddRecipeFragment : Fragment(), BackendListener, RecipeStepAdapter.RecipeStepAdapterListener {
 
     private val steps: MutableList<RecipeStep> = ArrayList()
     private val backend = BackendFactory.getInstance(this)
@@ -33,13 +33,16 @@ class AddRecipeFragment : Fragment(), BackendListener {
         if (view.list is RecyclerView) {
             with(view.list) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = RecipeStepAdapter(steps)
+                adapter = RecipeStepAdapter(steps, this@AddRecipeFragment)
             }
         }
 
-        view.addStepButton.setOnClickListener { addStep() }
-        view.submitRecipeButton.setOnClickListener { submitRecipe() }
+        view.submitRecipeFab.setOnClickListener { submitRecipe() }
         return view
+    }
+
+    override fun onAddStep() {
+        addStep()
     }
 
     private fun addStep() {
@@ -47,7 +50,10 @@ class AddRecipeFragment : Fragment(), BackendListener {
 
         if (view?.list is RecyclerView) {
             with(view?.list) {
-                if(this != null) adapter?.notifyDataSetChanged()
+                if(this != null) {
+                    adapter?.notifyDataSetChanged()
+                    scrollToPosition(steps.size)
+                }
             }
         }
     }
@@ -60,7 +66,7 @@ class AddRecipeFragment : Fragment(), BackendListener {
                 for (i in 0 until (adapter as RecipeStepAdapter).itemCount) {
                     val nextStep = getChildViewHolder(getChildAt(i))
                     if (nextStep is RecipeStepAdapter.ViewHolder) {
-                        finalSteps.add(RecipeStep(nextStep.mContentView.text.toString(), "", finalSteps.size + 1))
+                        finalSteps.add(RecipeStep(nextStep.mContentView?.text.toString(), "", finalSteps.size + 1))
                     }
                 }
 
