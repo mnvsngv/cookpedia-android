@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content">
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/step_height"
+            android:id="@+id/addStepButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent" android:src="@drawable/ic_add_step_dark"
+            android:background="#00FFFFFF" android:scaleX="3" android:scaleY="3" android:alpha="0.5"/>
+</android.support.constraint.ConstraintLayout>

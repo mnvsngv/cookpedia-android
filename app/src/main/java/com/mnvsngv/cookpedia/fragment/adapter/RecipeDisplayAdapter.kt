@@ -1,4 +1,4 @@
-package com.mnvsngv.cookpedia.adapter
+package com.mnvsngv.cookpedia.fragment.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -15,9 +15,11 @@ import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import kotlinx.android.synthetic.main.recipelist_item.view.*
 
 //Adapter class to display the recycler view
-class RecipeDisplayAdapter(private var context: Context?, private var recipeList: List<RecipeItem>) :
-
-    RecyclerView.Adapter<RecipeDisplayAdapter.MyViewHolder>() {
+class RecipeDisplayAdapter(
+    private val context: Context?,
+    private val recipeList: List<RecipeItem>,
+    private val listener: RecipeDisplayAdapterListener
+) : RecyclerView.Adapter<RecipeDisplayAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
@@ -32,9 +34,9 @@ class RecipeDisplayAdapter(private var context: Context?, private var recipeList
 
         val recipe = recipeList.get(position)
 
-        holder.recipeName.setText(recipe.recipe_name)
+        holder.recipeName.setText(recipe.name)
         context?.let {
-            Glide.with(it).load(recipe.recipe_image)
+            Glide.with(it).load(recipe.image)
                 .apply(
                     RequestOptions.placeholderOf(R.drawable.dish_default).override(50, 50).diskCacheStrategy(
                         DiskCacheStrategy.RESOURCE
@@ -42,10 +44,17 @@ class RecipeDisplayAdapter(private var context: Context?, private var recipeList
                 )
                 .into(holder.recipeImage)
         }
+        holder.itemView.setOnClickListener {
+            listener.onRecipeClick(recipe)
+        }
     }
 
     override fun getItemCount(): Int {
         return recipeList.size
+    }
+
+    interface RecipeDisplayAdapterListener {
+        fun onRecipeClick(recipe: RecipeItem)
     }
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {

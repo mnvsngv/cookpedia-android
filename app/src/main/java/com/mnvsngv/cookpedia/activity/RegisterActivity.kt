@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_register.*
 class RegisterActivity : AppCompatActivity(), BackendListener {
 
     private lateinit var backend :Backend
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -82,31 +83,13 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
     }
 
 
-    // Return a map of User Details to the backend
-//    override fun getUserDetails(user_id: String) {
-////        if (user_id == null) {
-////            Toast.makeText(
-////                this, "Authentication failed.", Toast.LENGTH_SHORT
-////            ).show()
-////        }
-//        val map: HashMap<String, Any> = hashMapOf(
-//            "id" to user_id.toString(),
-//            "fullname" to fullname.text.toString(),
-//            "username" to username.text.toString(),
-//            "password" to passwordInput.text.toString(),
-//            "email" to emailInput.text.toString()
-//        )
-//        backend.updateUserDetails(map, user_id)
-////        return map
-//    }
-
     override fun onRegisterSuccess() {
         val loadCookpedia = Intent(this, HomeActivity::class.java)
         startActivity(loadCookpedia)
         finish()
     }
 
-    override fun displayRegistrationErr() {
+    override fun onRegisterFailure() {
         Toast.makeText(this, "User cannot be registered. Please check the details!!", Toast.LENGTH_SHORT).show()
     }
 

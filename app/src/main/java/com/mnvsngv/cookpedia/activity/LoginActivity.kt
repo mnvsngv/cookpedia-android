@@ -66,8 +66,6 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
             TextUtils.isEmpty(it)
         } && isValid
 
-//        isValid = validate(passwordInput, R.string.invalid_password, TextUtils::isEmpty) && isValid
-
         return isValid
     }
 

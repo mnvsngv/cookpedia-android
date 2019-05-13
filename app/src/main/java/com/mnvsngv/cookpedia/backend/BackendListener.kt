@@ -6,4 +6,5 @@ interface BackendListener {
     fun onLoginSuccess() {}
     fun onRegisterSuccess() {}
     fun notifyChange() {}
+    fun onRegisterFailure() {}
 }

@@ -1,7 +1,6 @@
-package com.mnvsngv.cookpedia.fragments
+package com.mnvsngv.cookpedia.fragment
 
-import android.content.Context
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -12,16 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-
 import com.mnvsngv.cookpedia.R
-import com.mnvsngv.cookpedia.adapter.RecipeDisplayAdapter
-import com.mnvsngv.cookpedia.backend.*
+import com.mnvsngv.cookpedia.activity.RecipeViewActivity
+import com.mnvsngv.cookpedia.backend.Backend
+import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
+import com.mnvsngv.cookpedia.fragment.adapter.RecipeDisplayAdapter
 import com.mnvsngv.cookpedia.singleton.BackendFactory
-import kotlinx.android.synthetic.main.fragment_recipe_list.*
 
 
-class RecipeListFragment : Fragment(), BackendListener {
+class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.RecipeDisplayAdapterListener {
 
     private lateinit var backend : Backend
     private lateinit var mSearchtext : EditText
@@ -47,7 +46,7 @@ class RecipeListFragment : Fragment(), BackendListener {
 
 //        Reading all recipes from the backend and displaying them in the recycler view
         recipe_list = backend.readAllRecipes("")
-        recipeAdapter = RecipeDisplayAdapter(context, recipe_list)
+        recipeAdapter = RecipeDisplayAdapter(context, recipe_list, this)
         recipe_recycler_view.adapter = recipeAdapter
 
 //        List the searched recipes
@@ -75,6 +74,12 @@ class RecipeListFragment : Fragment(), BackendListener {
 
     override fun notifyChange() {
         recipeAdapter?.notifyDataSetChanged()
+    }
+
+    override fun onRecipeClick(recipe: RecipeItem) {
+        val intent = Intent(this.context, RecipeViewActivity::class.java)
+        intent.putExtra("HOOYOO", recipe)
+        startActivity(intent)
     }
 
     companion object {
