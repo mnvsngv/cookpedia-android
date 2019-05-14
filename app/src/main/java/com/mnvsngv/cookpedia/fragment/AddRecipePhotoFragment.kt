@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.activity.helper.PhotoIntentCreator
@@ -67,12 +68,16 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
 
                 }
             }
-            Glide.with((view?.recipeImage) as View).load(photoHelper.photoUri).submit()
+
+            with ((view?.recipeImage) as ImageView) {
+                Glide.with(this.context as Context).load(photoHelper.photoUri).into(this)
+                alpha = 1f
+            }
         }
     }
 
     private fun getRecipePhoto() {
-        startActivity(photoHelper.newIntent(this.context as Context))
+        startActivityForResult(photoHelper.newIntent(this.context as Context), GET_PHOTO)
     }
 
 
