@@ -1,5 +1,6 @@
 package com.mnvsngv.cookpedia.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -11,8 +12,9 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import com.mnvsngv.cookpedia.R
-import com.mnvsngv.cookpedia.fragment.AddRecipeFragment
+import com.mnvsngv.cookpedia.fragment.AddRecipeStepsFragment
 import com.mnvsngv.cookpedia.fragment.RecipeListFragment
+import kotlinx.android.synthetic.main.app_bar_home.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +33,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+        addRecipeFab.setOnClickListener { startActivity(Intent(this, AddRecipeActivity::class.java)) }
     }
 
     override fun onBackPressed() {
@@ -71,7 +75,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceWithFragment(RecipeListFragment.newInstance())
             }
             R.id.nav_add_recipe -> {
-                replaceWithFragment(AddRecipeFragment())
+                replaceWithFragment(AddRecipeStepsFragment())
             }
             R.id.nav_share -> {
 

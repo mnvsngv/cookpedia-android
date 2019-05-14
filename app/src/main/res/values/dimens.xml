@@ -11,4 +11,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="step_height">75sp</dimen>
     <dimen name="recipe_name_input_size">36sp</dimen>
+    <dimen name="image_height">250sp</dimen>
 </resources>
