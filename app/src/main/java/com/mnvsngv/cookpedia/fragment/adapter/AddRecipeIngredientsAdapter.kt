@@ -10,7 +10,8 @@ import android.widget.TextView
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import kotlinx.android.synthetic.main.add_ingredient_button.view.*
-import kotlinx.android.synthetic.main.fragment_add_step.view.*
+import kotlinx.android.synthetic.main.fragment_add_ingredient.view.*
+import kotlinx.android.synthetic.main.fragment_add_step.view.content
 
 
 class AddRecipeIngredientsAdapter(
@@ -34,6 +35,7 @@ class AddRecipeIngredientsAdapter(
         } else {
             val ingredient = mValues[position]
             holder.mContentView?.text = ingredient.name
+            holder.mQuantityView?.text = ingredient.quantity.toString()
 
             with(holder.mView) {
                 tag = ingredient
@@ -45,19 +47,22 @@ class AddRecipeIngredientsAdapter(
     override fun getItemCount(): Int = mValues.size + 1
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == mValues.size) R.layout.add_ingredient_button else R.layout.fragment_add_ingredient
+        return if (position == mValues.size) R.layout.add_ingredient_button
+        else R.layout.fragment_add_ingredient
+    }
+
+    interface RecipeIngredientsListener {
+        fun onAddIngredient()
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mContentView: TextView? = mView.content
+        val mQuantityView: TextView? = mView.quantity
         val mButton: ImageButton? = mView.addIngredientButton
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView?.text + "'"
         }
-    }
 
-    interface RecipeIngredientsListener {
-        fun onAddIngredient()
     }
 }

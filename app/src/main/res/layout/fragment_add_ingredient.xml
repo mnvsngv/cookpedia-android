@@ -3,16 +3,26 @@
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              android:layout_width="match_parent"
                                              android:layout_height="wrap_content"
-                                             android:orientation="horizontal" android:id="@+id/linearLayout">
+                                             android:orientation="horizontal"
+                                             android:layout_margin="@dimen/form_padding">
 
     <EditText
             android:id="@+id/content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:inputType="textMultiLine|text"
-            android:hint="@string/step_hint"
+            android:inputType="text"
+            android:hint="@string/ingredient_hint"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_weight="8" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintHorizontal_weight="4"
+            app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toLeftOf="@id/quantity"/>
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/quantity" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/content" app:layout_constraintHorizontal_weight="1"
+            android:hint="@string/quantity_hint"/>
 </android.support.constraint.ConstraintLayout>

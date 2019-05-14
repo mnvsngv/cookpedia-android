@@ -14,10 +14,10 @@ import kotlinx.android.synthetic.main.add_step_button.view.*
 import kotlinx.android.synthetic.main.fragment_add_step.view.*
 
 
-class RecipeStepAdapter(
+class AddRecipeStepsAdapter(
     private val mValues: List<RecipeStep>,
     private val listener: RecipeStepAdapterListener
-) : RecyclerView.Adapter<RecipeStepAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<AddRecipeStepsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -32,7 +32,6 @@ class RecipeStepAdapter(
 
         if (position == mValues.size) {
             holder.mButton?.setOnClickListener {
-                Log.i("Adapter", "BUTTON CLICKYYY")
                 listener.onAddStep()
             }
         } else {

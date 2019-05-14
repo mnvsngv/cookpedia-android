@@ -27,14 +27,14 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_recipe_ingredients, container, false)
 
-        onAddIngredient()
+        if (ingredients.size == 0) onAddIngredient()
 
         with(view.list) {
             layoutManager = LinearLayoutManager(context)
             adapter = AddRecipeIngredientsAdapter(ingredients, this@AddRecipeIngredientsFragment)
         }
 
-        view.addIngredientsFab.setOnClickListener { listener.onNext() }
+        view.addIngredientsFab.setOnClickListener { listener.afterAddIngredients(getIngredients()) }
 
         return view
     }
@@ -45,7 +45,10 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
     }
 
     override fun onAddIngredient() {
-        ingredients.add(RecipeIngredient("", 1))
+        val cachedIngredients = getIngredients()
+        ingredients.removeAll { true }
+        ingredients.addAll(cachedIngredients)
+        ingredients.add(RecipeIngredient("", 0))
 
         if (view?.list is RecyclerView) {
             with(view?.list) {
@@ -57,9 +60,30 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
         }
     }
 
+    private fun getIngredients(): List<RecipeIngredient> {
+        if (view?.list is RecyclerView) {
+            with(view?.list as RecyclerView) {
+
+                val finalIngredients = ArrayList<RecipeIngredient>()
+                for (i in 0 until (adapter as AddRecipeIngredientsAdapter).itemCount - 1) {
+                    val nextIngredient = getChildViewHolder(getChildAt(i))
+                    if (nextIngredient is AddRecipeIngredientsAdapter.ViewHolder) {
+                        val content = nextIngredient.mContentView?.text.toString()
+                        val quantityString = nextIngredient.mQuantityView?.text.toString()
+                        val quantity = if (quantityString.isNotEmpty()) quantityString.toInt() else 0
+                        finalIngredients.add(RecipeIngredient(content, quantity))
+                    }
+                }
+                return finalIngredients
+            }
+        }
+        return listOf()
+
+    }
+
 
     interface AddRecipeIngredientsListener {
-        fun onNext()
+        fun afterAddIngredients(ingredients: List<RecipeIngredient>)
     }
 
 }

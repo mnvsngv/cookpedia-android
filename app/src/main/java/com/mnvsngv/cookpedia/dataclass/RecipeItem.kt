@@ -8,12 +8,14 @@ import java.util.*
 data class RecipeItem(
     val name: String = "",
     val image: String = "",
-    val steps: ArrayList<RecipeStep> = arrayListOf()
+    val steps: ArrayList<RecipeStep> = arrayListOf(),
+    val ingredients: List<RecipeIngredient>
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
-        parcel.readArrayList(null) as ArrayList<RecipeStep>
+        parcel.readArrayList(null) as ArrayList<RecipeStep>,
+        parcel.readArrayList(null) as ArrayList<RecipeIngredient>
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
