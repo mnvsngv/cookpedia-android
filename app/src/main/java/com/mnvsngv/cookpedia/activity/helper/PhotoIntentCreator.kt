@@ -1,5 +1,6 @@
 package com.mnvsngv.cookpedia.activity.helper
 
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -13,15 +14,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+
+const val GET_PHOTO = 1
+
 class PhotoIntentCreator {
 
     lateinit var photoUri: Uri
-    /**
-     * Create a chooser intent to select the source to get image from.<br></br>
-     * The source can be camera's (ACTION_IMAGE_CAPTURE) or gallery's (ACTION_GET_CONTENT).<br></br>
-     * All possible sources are added to the intent chooser.
-     */
-    fun newIntent(context: Context): Intent {
+    private lateinit var onPhotoCapture: () -> Unit
+
+    fun newIntent(context: Context, onPhotoCapture: () -> Unit): Intent {
+
+        this.onPhotoCapture = onPhotoCapture
+
         // Determine Uri of camera image to save.
         photoUri = FileProvider.getUriForFile(
             context,
@@ -71,6 +75,21 @@ class PhotoIntentCreator {
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toTypedArray())
 
         return chooserIntent
+    }
+
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                GET_PHOTO -> {
+                    data?.let {
+                        photoUri = it.data as Uri
+                    }
+
+                }
+            }
+
+            onPhotoCapture()
+        }
     }
 
 

@@ -1,6 +1,5 @@
 package com.mnvsngv.cookpedia.fragment
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,13 +11,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.mnvsngv.cookpedia.R
+import com.mnvsngv.cookpedia.activity.helper.GET_PHOTO
 import com.mnvsngv.cookpedia.activity.helper.PhotoIntentCreator
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 import kotlinx.android.synthetic.main.fragment_add_recipe_photo.view.*
 
-private const val GET_PHOTO = 1
 private const val RECIPE_KEY = "recipe"
 
 class AddRecipePhotoFragment : Fragment(), BackendListener {
@@ -59,25 +58,16 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                GET_PHOTO -> {
-                    data?.let {
-                        photoHelper.photoUri = it.data as Uri
-                    }
+        photoHelper.onActivityResult(requestCode, resultCode, data)
+    }
 
-                }
-            }
-
+    private fun getRecipePhoto() {
+        startActivityForResult(photoHelper.newIntent(this.context as Context) {
             with ((view?.recipeImage) as ImageView) {
                 Glide.with(this.context as Context).load(photoHelper.photoUri).into(this)
                 alpha = 1f
             }
-        }
-    }
-
-    private fun getRecipePhoto() {
-        startActivityForResult(photoHelper.newIntent(this.context as Context), GET_PHOTO)
+        }, GET_PHOTO)
     }
 
 
