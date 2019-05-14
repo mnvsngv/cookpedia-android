@@ -1,9 +1,11 @@
 package com.mnvsngv.cookpedia.backend
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.dataclass.User
 
@@ -16,6 +18,7 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance()
 
     override fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
@@ -60,12 +63,6 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         recipeCollection.get().addOnSuccessListener { result ->
             for (document in result) {
                 val recipeItem = document.toObject(RecipeItem::class.java)
-//                val steps_list = document.get("steps").to(RecipeStep::class.java)
-//                val recipe_image = document.get("image")
-//                val recipe_name = document.get("name")
-
-//                val recipeItem =
-//                    RecipeItem(recipe_name as String, recipe_image as String, steps_list.first as ArrayList<RecipeStep>)
                 recipeList.add(recipeItem)
                 backendListener.notifyChange()
             }
@@ -74,7 +71,22 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
     }
 
     override fun addRecipe(recipe: RecipeItem) {
-        db.collection(RECIPES_COLLECTION).document()
-            .set(recipe)
+        val photoUri = Uri.parse(recipe.image)
+
+        if (photoUri.lastPathSegment != null) {
+            recipe.image = photoUri.lastPathSegment as String
+        }
+        val storageRef = storage.reference
+
+        db.collection(RECIPES_COLLECTION)
+            .add(recipe)
+            .addOnSuccessListener { documentReference ->
+                val id = documentReference.id
+                val photoRef = storageRef.child("$id/${photoUri.lastPathSegment}")
+                photoRef.putFile(photoUri)
+                    .addOnCompleteListener {
+                        backendListener.onRecipeUploadSuccess()
+                    }
+            }
     }
 }

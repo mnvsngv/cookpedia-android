@@ -7,7 +7,7 @@ import java.util.*
 //Recipe Item dataclass
 data class RecipeItem(
     val name: String = "",
-    val image: String = "",
+    var image: String = "",
     val steps: ArrayList<RecipeStep> = arrayListOf(),
     val ingredients: List<RecipeIngredient>
 ) : Parcelable {
@@ -22,6 +22,7 @@ data class RecipeItem(
         parcel.writeString(name)
         parcel.writeString(image)
         parcel.writeList(steps)
+        parcel.writeList(ingredients)
     }
 
     override fun describeContents(): Int {

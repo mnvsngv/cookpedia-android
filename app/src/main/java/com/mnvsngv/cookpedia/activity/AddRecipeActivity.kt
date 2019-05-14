@@ -15,6 +15,9 @@ class AddRecipeActivity : AppCompatActivity(),
         AddRecipeIngredientsFragment.AddRecipeIngredientsListener,
         AddRecipeStepsFragment.AddRecipeStepsListener,
         AddRecipePhotoFragment.OnFragmentInteractionListener {
+
+    private lateinit var recipe: RecipeItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_recipe)
@@ -27,11 +30,16 @@ class AddRecipeActivity : AppCompatActivity(),
     }
 
     override fun afterAddSteps(recipe: RecipeItem) {
+        this.recipe = recipe
         replaceWithFragment(AddRecipePhotoFragment.newInstance(recipe))
     }
 
     override fun afterAddPhoto(uri: Uri) {
+        recipe.image = uri.toString()
+    }
 
+    override fun afterRecipeUpload() {
+        finish()
     }
 
     private fun replaceWithFragment(newFragment: Fragment) {

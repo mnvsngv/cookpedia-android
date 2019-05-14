@@ -92,10 +92,11 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
                     }
                 }
 
-                 return RecipeItem(
+                return RecipeItem(
                     view?.recipeNameInput?.text.toString(),
-                    steps = finalSteps,
-                    ingredients = ingredients
+                    "",
+                    finalSteps,
+                    ingredients
                 )
             }
         }

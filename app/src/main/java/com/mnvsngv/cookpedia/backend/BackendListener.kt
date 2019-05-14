@@ -7,4 +7,5 @@ interface BackendListener {
     fun onRegisterSuccess() {}
     fun notifyChange() {}
     fun onRegisterFailure() {}
+    fun onRecipeUploadSuccess() {}
 }

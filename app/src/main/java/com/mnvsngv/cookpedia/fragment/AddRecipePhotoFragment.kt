@@ -12,7 +12,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.activity.helper.GET_PHOTO
-import com.mnvsngv.cookpedia.activity.helper.PhotoIntentCreator
+import com.mnvsngv.cookpedia.activity.helper.PhotoCapture
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.singleton.BackendFactory
@@ -23,8 +23,8 @@ private const val RECIPE_KEY = "recipe"
 class AddRecipePhotoFragment : Fragment(), BackendListener {
 
     private val backend = BackendFactory.getInstance(this)
-    private var listener: OnFragmentInteractionListener? = null
-    private val photoHelper = PhotoIntentCreator()
+    private lateinit var listener: OnFragmentInteractionListener
+    private val photoHelper = PhotoCapture()
     private lateinit var recipe: RecipeItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +42,9 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
         Glide.with(view.recipeImage).load(R.drawable.ic_add_recipe_image_dark).submit()
         view.recipeImage.setOnClickListener { getRecipePhoto() }
 
-        view.submitRecipeFab.setOnClickListener { backend.addRecipe(recipe) }
+        view.submitRecipeFab.setOnClickListener {
+            backend.addRecipe(recipe)
+        }
 
         return view
     }
@@ -52,17 +54,18 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
         listener = context as OnFragmentInteractionListener
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         photoHelper.onActivityResult(requestCode, resultCode, data)
     }
 
+    override fun onRecipeUploadSuccess() {
+//        photoHelper.deletePhoto()
+        listener.afterRecipeUpload()
+    }
+
     private fun getRecipePhoto() {
         startActivityForResult(photoHelper.newIntent(this.context as Context) {
+            listener.afterAddPhoto(photoHelper.photoUri)
             with ((view?.recipeImage) as ImageView) {
                 Glide.with(this.context as Context).load(photoHelper.photoUri).into(this)
                 alpha = 1f
@@ -74,6 +77,7 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun afterAddPhoto(uri: Uri)
+        fun afterRecipeUpload()
     }
 
     companion object {

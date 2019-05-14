@@ -17,13 +17,15 @@ import kotlin.collections.ArrayList
 
 const val GET_PHOTO = 1
 
-class PhotoIntentCreator {
+class PhotoCapture {
 
     lateinit var photoUri: Uri
+    private lateinit var context: Context
     private lateinit var onPhotoCapture: () -> Unit
 
     fun newIntent(context: Context, onPhotoCapture: () -> Unit): Intent {
 
+        this.context = context
         this.onPhotoCapture = onPhotoCapture
 
         // Determine Uri of camera image to save.
@@ -92,6 +94,12 @@ class PhotoIntentCreator {
         }
     }
 
+    fun deletePhoto() {
+        if (photoUri.authority == "com.mnvsngv.mnvsngv.fileprovider") {
+            // Clean up after upload
+            context.contentResolver.delete(photoUri, null, null)
+        }
+    }
 
     private fun createImageFile(context: Context): File {
         // Create an image file name
