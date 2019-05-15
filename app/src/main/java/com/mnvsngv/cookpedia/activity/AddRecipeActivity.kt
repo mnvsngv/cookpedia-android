@@ -22,7 +22,10 @@ class AddRecipeActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_recipe)
 
-        replaceWithFragment(AddRecipeIngredientsFragment())
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.fragmentContainer, AddRecipeIngredientsFragment())
+        transaction.commit()
     }
 
     override fun afterAddIngredients(ingredients: List<RecipeIngredient>) {
