@@ -71,7 +71,10 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
                         val content = nextIngredient.mContentView?.text.toString()
                         val quantityString = nextIngredient.mQuantityView?.text.toString()
                         val quantity = if (quantityString.isNotEmpty()) quantityString.toInt() else 0
-                        finalIngredients.add(RecipeIngredient(content, quantity))
+
+                        if (content.isNotEmpty()) {
+                            finalIngredients.add(RecipeIngredient(content, quantity))
+                        }
                     }
                 }
                 return finalIngredients

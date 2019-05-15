@@ -88,7 +88,10 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
                 for (i in 0 until (adapter as AddRecipeStepsAdapter).itemCount - 1) {
                     val nextStep = getChildViewHolder(getChildAt(i))
                     if (nextStep is AddRecipeStepsAdapter.ViewHolder) {
-                        finalSteps.add(RecipeStep(nextStep.mContentView?.text.toString(), "", finalSteps.size + 1))
+                        val step = nextStep.mContentView?.text.toString()
+                        if (step.isNotEmpty()) {
+                            finalSteps.add(RecipeStep(step, "", finalSteps.size + 1))
+                        }
                     }
                 }
 
