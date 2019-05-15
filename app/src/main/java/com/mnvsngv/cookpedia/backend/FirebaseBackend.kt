@@ -3,6 +3,7 @@ package com.mnvsngv.cookpedia.backend
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
@@ -13,6 +14,7 @@ private const val USERS_COLLECTION = "Users"
 private const val RECIPES_COLLECTION = "Recipes"
 private var recipeList: MutableList<RecipeItem> = mutableListOf()
 private lateinit var recipeCollection : Query
+private lateinit var docRef: DocumentReference
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
@@ -21,49 +23,52 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
     private val storage = FirebaseStorage.getInstance()
 
     override fun loginUser(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
-            if(task.isSuccessful) {
-                Log.d("auth", "createUserWithEmail:success")
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("auth", "loginUserWithEmail:success")
                 backendListener.onLoginSuccess()
-            }
-            else {
-                Log.w("db", "createUserWithEmail:failure", task.exception)
-                backendListener.onRegisterFailure()
+            } else {
+                Log.d("auth", "loginUserWithEmail:failure")
+                backendListener.onLoginFailure()
             }
         }
     }
 
     override fun registerUser(email: String, password: String, fullName: String, username: String) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task->
-            if(task.isSuccessful) {
-                db.collection(USERS_COLLECTION).document(username)
-                    .set(User(email, username, fullName))
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                db.collection(USERS_COLLECTION).document(email)
+                    .set(User(email, username, fullName, arrayListOf()))
                     .addOnSuccessListener {
                         backendListener.onRegisterSuccess()
                     }
-            }
-            else {
+            } else {
                 Log.w("db", "createUserWithEmail:failure", task.exception)
                 backendListener.onRegisterFailure()
             }
         }
     }
 
-    override fun readAllRecipes(searchstr: String): MutableList<RecipeItem> {
-
-        if(searchstr.length == 0) {
-            recipeCollection = db.collection(RECIPES_COLLECTION)
-
-        } else if (searchstr.length > 0) {
-            recipeCollection =
-                    db.collection(RECIPES_COLLECTION).orderBy("name").startAt(searchstr.trim()).endAt(searchstr.trim()+"\uf8ff")
-        }
+    override fun readAllRecipes(): MutableList<RecipeItem> {
+        var recipeCollection = db.collection(RECIPES_COLLECTION)
 
         recipeList.clear()
         recipeCollection.get().addOnSuccessListener { result ->
             for (document in result) {
                 val recipeItem = document.toObject(RecipeItem::class.java)
                 recipeList.add(recipeItem)
+                backendListener.notifyChange()
+            }
+        }
+        return recipeList
+    }
+
+    override fun readUserRecipes(): MutableList<RecipeItem> {
+        var current_user = auth.currentUser?.email
+
+        current_user?.let {
+            db.collection(USERS_COLLECTION).document(current_user).get().addOnSuccessListener { task ->
+                recipeList = task.get("user_recipes") as MutableList<RecipeItem>
                 backendListener.notifyChange()
             }
         }
@@ -85,8 +90,18 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
                 val photoRef = storageRef.child("$id/${photoUri.lastPathSegment}")
                 photoRef.putFile(photoUri)
                     .addOnCompleteListener {
+                        updateUserRecipes(recipe)
                         backendListener.onRecipeUploadSuccess()
                     }
             }
     }
+
+    override fun updateUserRecipes(recipe: RecipeItem) {
+        var current_user = auth.currentUser?.email
+
+        current_user?.let {
+            db.collection(USERS_COLLECTION).document(current_user).update("user_recipes", FieldValue.arrayUnion(recipe))
+        }
+    }
+
 }

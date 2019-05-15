@@ -13,6 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.fragment.AddRecipeStepsFragment
+import com.mnvsngv.cookpedia.fragment.RecipeGridFragment
 import com.mnvsngv.cookpedia.fragment.RecipeListFragment
 import kotlinx.android.synthetic.main.app_bar_home.*
 
@@ -66,7 +67,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-
+                replaceWithFragment(RecipeGridFragment.newInstance())
             }
             R.id.nav_my_recipe -> {
 
