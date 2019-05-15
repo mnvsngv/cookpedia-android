@@ -41,6 +41,10 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
         addRecipeFab.setOnClickListener {
             startActivityForResult(Intent(this, AddRecipeActivity::class.java), ADD_RECIPE)
         }
+
+        searchRecipeFab.setOnClickListener {
+            startActivity(Intent(this, SearchRecipeActivity::class.java))
+        }
     }
 
     override fun onReadAllRecipes(recipes: List<RecipeItem>) {

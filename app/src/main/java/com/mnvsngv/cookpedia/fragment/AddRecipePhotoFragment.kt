@@ -18,7 +18,7 @@ import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 import kotlinx.android.synthetic.main.fragment_add_recipe_photo.view.*
 
-private const val RECIPE_KEY = "recipe"
+const val RECIPE_KEY = "recipe"
 
 class AddRecipePhotoFragment : Fragment(), BackendListener {
 

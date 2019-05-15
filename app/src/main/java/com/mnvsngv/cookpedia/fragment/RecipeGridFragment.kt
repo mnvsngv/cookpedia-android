@@ -33,7 +33,7 @@ class RecipeGridFragment : Fragment(), BackendListener, RecipeGridViewAdapter.Re
         recipe_recycler_view?.layoutManager = GridLayoutManager(context,2)
 
 
-//        recipe_list = backend.readAllRecipes()
+//        recipeList = backend.readAllRecipes()
         recipeAdapter = RecipeGridViewAdapter(context, recipe_list, this)
         recipe_recycler_view?.adapter = recipeAdapter
 

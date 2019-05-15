@@ -1,5 +1,6 @@
 package com.mnvsngv.cookpedia.backend
 
+import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 
 
@@ -10,4 +11,6 @@ interface Backend {
     fun readAllRecipes()
     fun updateUserRecipes(recipe: RecipeItem)
     fun readUserRecipes() : MutableList<RecipeItem>
+    fun getAllIngredients()
+    fun searchRecipesUsing(ingredientsToSearch: List<RecipeIngredient>)
 }

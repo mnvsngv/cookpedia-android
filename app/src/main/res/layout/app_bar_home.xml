@@ -59,7 +59,15 @@
     <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true" app:srcCompat="@drawable/ic_add_step_dark" android:id="@+id/addRecipeFab"
+            android:clickable="true" app:srcCompat="@drawable/ic_search_recipe_dark" android:id="@+id/searchRecipeFab"
+            app:layout_constraintBottom_toTopOf="@id/addRecipeFab"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_margin="@dimen/fab_margin"
+            android:background="#FFF" app:backgroundTint="#FFF"/>
+
+    <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true" app:srcCompat="@drawable/ic_add_recipe_light" android:id="@+id/addRecipeFab"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:layout_margin="@dimen/fab_margin"/>
 

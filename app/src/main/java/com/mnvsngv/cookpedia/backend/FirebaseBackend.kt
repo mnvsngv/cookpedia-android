@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
+import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.dataclass.User
 
@@ -102,6 +103,35 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         current_user?.let {
             db.collection(USERS_COLLECTION).document(current_user).update("user_recipes", FieldValue.arrayUnion(recipe))
         }
+    }
+
+    override fun getAllIngredients() {
+
+        db.collection(RECIPES_COLLECTION)
+            .get()
+            .addOnSuccessListener { result ->
+                val ingredients = HashSet<RecipeIngredient>()
+                for (document in result) {
+                    val recipeItem = document.toObject(RecipeItem::class.java)
+                    ingredients.addAll(recipeItem.ingredients)
+                }
+                backendListener.onGetAllIngredients(ingredients.toList())
+            }
+    }
+
+    override fun searchRecipesUsing(ingredientsToSearch: List<RecipeIngredient>) {
+        db.collection(RECIPES_COLLECTION)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val validRecipes = ArrayList<RecipeItem>()
+                for (document in snapshot) {
+                    val recipe = document.toObject(RecipeItem::class.java)
+                    if (recipe.ingredients.containsAll(ingredientsToSearch)) {
+                        validRecipes.add(recipe)
+                    }
+                }
+                backendListener.onSearchRecipesUsing(validRecipes)
+            }
     }
 
 }

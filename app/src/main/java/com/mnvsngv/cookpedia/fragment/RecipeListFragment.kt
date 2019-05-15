@@ -4,88 +4,74 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.activity.RecipeViewActivity
-import com.mnvsngv.cookpedia.backend.Backend
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.fragment.adapter.RecipeDisplayAdapter
 import com.mnvsngv.cookpedia.singleton.BackendFactory
+import kotlinx.android.synthetic.main.fragment_recipe_list.view.*
+import java.io.Serializable
 
 
-class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.RecipeDisplayAdapterListener {
+// TODO Rename RECIPES_KEY and RECIPE_KEY and rearrange to use them globally & sensibly
+const val RECIPES_KEY = "recipes"
 
-    private lateinit var backend : Backend
+class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.Listener {
+
+    private val backend = BackendFactory.getInstance(this)
     private lateinit var mSearchtext : EditText
-    private lateinit var recipe_recycler_view: RecyclerView
-    private var recipeAdapter: RecipeDisplayAdapter ?= null
-    var recipe_list: MutableList<RecipeItem> = mutableListOf()
+    private lateinit var recipeList: List<RecipeItem>
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i("tagger", "onCreateView")
         // Inflate the layout for this fragment
-        var mFragView = inflater.inflate(R.layout.fragment_recipe_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
 
-        recipe_recycler_view = mFragView.findViewById(R.id.recipelist_view)
-        mSearchtext = mFragView.findViewById(R.id.search_text)
+//        recipe_recycler_view = view.findViewById(R.id.list)
+        mSearchtext = view.findViewById(R.id.search_text)
 
 //        Setting the Layout for the Recycler view to display recipes
-        val mLayoutManager = LinearLayoutManager(context)
-        recipe_recycler_view.setLayoutManager(mLayoutManager)
-        recipe_recycler_view.hasFixedSize()
+//        view.list.hasFixedSize()
+        view.list.layoutManager = LinearLayoutManager(context)
+        view.list.adapter = RecipeDisplayAdapter(context, recipeList, this)
 
-//        Reading all recipes from the backend and displaying them in the recycler view
-//        recipe_list = backend.readAllRecipes()
-        recipeAdapter = RecipeDisplayAdapter(context, recipe_list, this)
-        recipe_recycler_view.adapter = recipeAdapter
-
-//        List the searched recipes
-        mSearchtext.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                backend.readAllRecipes(s.toString().toLowerCase())
-            }
-        })
-
-        return mFragView
+        return view
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        backend = BackendFactory.getInstance(this)
-
+        Log.i("tagger", "onCreate")
+        recipeList = arguments?.getSerializable(RECIPES_KEY) as List<RecipeItem>
     }
 
     override fun notifyChange() {
-        recipeAdapter?.notifyDataSetChanged()
+//        recipeAdapter?.notifyDataSetChanged()
     }
 
     override fun onRecipeClick(recipe: RecipeItem) {
         val intent = Intent(this.context, RecipeViewActivity::class.java)
-        intent.putExtra("HOOYOO", recipe)
+        intent.putExtra(RECIPE_KEY, recipe)
         startActivity(intent)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(): RecipeListFragment {
-            return RecipeListFragment()
+        fun newInstance(recipes: List<RecipeItem>): RecipeListFragment {
+            return RecipeListFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(RECIPES_KEY, recipes as Serializable)
+                }
+            }
         }
     }
 }
