@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
-import com.mnvsngv.cookpedia.fragment.adapter.RecipeViewAdapter
+import com.mnvsngv.cookpedia.fragment.adapter.RecipeListViewAdapter
 import kotlinx.android.synthetic.main.activity_recipe_view.*
 
 
@@ -19,6 +19,6 @@ class RecipeViewActivity : AppCompatActivity() {
         recipeName.text = recipe.name
         Log.i("RecipeViewActivity", "Steps: ${recipe.steps.size}")
         list.layoutManager = LinearLayoutManager(this)
-        list.adapter = RecipeViewAdapter(recipe.steps)
+        list.adapter = RecipeListViewAdapter(recipe.steps)
     }
 }

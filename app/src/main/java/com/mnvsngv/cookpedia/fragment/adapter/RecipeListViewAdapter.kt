@@ -12,9 +12,9 @@ import com.mnvsngv.cookpedia.dataclass.RecipeStep
 import kotlinx.android.synthetic.main.recipe_step_view.view.*
 
 
-class RecipeViewAdapter(
+class RecipeListViewAdapter(
     private val mValues: List<RecipeStep>
-) : RecyclerView.Adapter<RecipeViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RecipeListViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.singleton.BackendFactory
@@ -76,5 +78,10 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
             view.error = getString(errorMessageID)
             false
         } else true
+    }
+
+    override fun onLoginFailure() {
+        Log.d("auth", "Register failure invoked")
+        Toast.makeText(this, "User cannot Login. Please check the email and password!!", Toast.LENGTH_SHORT).show()
     }
 }
