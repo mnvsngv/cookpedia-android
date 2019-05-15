@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.recipelist_item.view.*
 class RecipeDisplayAdapter(
     private val context: Context?,
     private val recipeList: List<RecipeItem>,
-    private val listener: RecipeDisplayAdapterListener
+    private val listener: Listener
 ) : RecyclerView.Adapter<RecipeDisplayAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -53,7 +53,7 @@ class RecipeDisplayAdapter(
         return recipeList.size
     }
 
-    interface RecipeDisplayAdapterListener {
+    interface Listener {
         fun onRecipeClick(recipe: RecipeItem)
     }
 

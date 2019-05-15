@@ -1,94 +1,75 @@
 package com.mnvsngv.cookpedia.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
+import android.util.Log
 import com.mnvsngv.cookpedia.R
-import com.mnvsngv.cookpedia.fragment.AddRecipeFragment
-import com.mnvsngv.cookpedia.fragment.RecipeGridFragment
-import com.mnvsngv.cookpedia.fragment.RecipeListFragment
+import com.mnvsngv.cookpedia.backend.BackendListener
+import com.mnvsngv.cookpedia.dataclass.RecipeItem
+import com.mnvsngv.cookpedia.fragment.adapter.RecipeGridViewAdapter
+import com.mnvsngv.cookpedia.singleton.BackendFactory
+import kotlinx.android.synthetic.main.app_bar_home.*
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+private const val ADD_RECIPE = 1
+const val RECIPE_KEY = "recipe"
+
+class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter.RecipeDisplayAdapterListener {
+
+
+    var recipes: MutableList<RecipeItem> = mutableListOf()
+    private val backend = BackendFactory.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.app_bar_home)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+//        var mFragView = inflater.inflate(R.layout.fragment_recipe_grid, container, false)
+//        recipe_recycler_view = findViewById(R.id.recipe_grid_view)
+        list?.layoutManager = GridLayoutManager(this,2)
+        list?.adapter = RecipeGridViewAdapter(this, recipes, this)
+//        recipeAdapter = list?.adapter as RecipeGridViewAdapter
 
-        navView.setNavigationItemSelectedListener(this)
-    }
+        backend.readAllRecipes()
 
-    override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
+        addRecipeFab.setOnClickListener {
+            startActivityForResult(Intent(this, AddRecipeActivity::class.java), ADD_RECIPE)
+        }
+
+        searchRecipeFab.setOnClickListener {
+            startActivity(Intent(this, SearchRecipeActivity::class.java))
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.home, menu)
-        return true
+    override fun onReadAllRecipes(recipes: List<RecipeItem>) {
+        Log.i("tagger", "onReadAllRecipes")
+        this.recipes.clear()
+        this.recipes.addAll(recipes)
+        list?.adapter?.notifyDataSetChanged()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    override fun onRecipeClick(recipe: RecipeItem) {
+        val intent = Intent(this, RecipeViewActivity::class.java)
+        intent.putExtra(RECIPE_KEY, recipe)
+        startActivity(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.i("tagger", "onActivityResult")
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                ADD_RECIPE -> {
+                    Log.i("tagger", "ADD_RECIPE")
+                    backend.readAllRecipes()
+                }
+            }
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_home -> {
-                replaceWithFragment(RecipeGridFragment.newInstance())
-            }
-            R.id.nav_my_recipe -> {
-
-            }
-            R.id.nav_search_recipes -> {
-                replaceWithFragment(RecipeListFragment.newInstance())
-            }
-            R.id.nav_add_recipe -> {
-                replaceWithFragment(AddRecipeFragment())
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
-        }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    private fun replaceWithFragment(newFragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, newFragment)
-        transaction.commit()
-    }
 }

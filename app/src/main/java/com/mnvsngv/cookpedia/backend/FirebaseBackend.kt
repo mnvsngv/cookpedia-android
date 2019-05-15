@@ -1,20 +1,28 @@
 package com.mnvsngv.cookpedia.backend
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
+import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.dataclass.User
 
 private const val USERS_COLLECTION = "Users"
 private const val RECIPES_COLLECTION = "Recipes"
 private var recipeList: MutableList<RecipeItem> = mutableListOf()
+private lateinit var recipeCollection : Query
 private lateinit var docRef: DocumentReference
 
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance()
 
     override fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
@@ -43,18 +51,17 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         }
     }
 
-    override fun readAllRecipes(): MutableList<RecipeItem> {
+    override fun readAllRecipes() {
         var recipeCollection = db.collection(RECIPES_COLLECTION)
 
-        recipeList.clear()
         recipeCollection.get().addOnSuccessListener { result ->
+            val recipes = ArrayList<RecipeItem>()
             for (document in result) {
                 val recipeItem = document.toObject(RecipeItem::class.java)
-                recipeList.add(recipeItem)
-                backendListener.notifyChange()
+                recipes.add(recipeItem)
             }
+            backendListener.onReadAllRecipes(recipes)
         }
-        return recipeList
     }
 
     override fun readUserRecipes(): MutableList<RecipeItem> {
@@ -70,9 +77,24 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
     }
 
     override fun addRecipe(recipe: RecipeItem) {
-        docRef = db.collection(RECIPES_COLLECTION).document()
-        docRef.set(recipe)
-        updateUserRecipes(recipe)
+        val photoUri = Uri.parse(recipe.image)
+
+        if (photoUri.lastPathSegment != null) {
+            recipe.image = photoUri.lastPathSegment as String
+        }
+        val storageRef = storage.reference
+
+        db.collection(RECIPES_COLLECTION)
+            .add(recipe)
+            .addOnSuccessListener { documentReference ->
+                val id = documentReference.id
+                val photoRef = storageRef.child("$id/${photoUri.lastPathSegment}")
+                photoRef.putFile(photoUri)
+                    .addOnCompleteListener {
+                        updateUserRecipes(recipe)
+                        backendListener.onRecipeUploadSuccess()
+                    }
+            }
     }
 
     override fun updateUserRecipes(recipe: RecipeItem) {
@@ -81,6 +103,35 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         current_user?.let {
             db.collection(USERS_COLLECTION).document(current_user).update("user_recipes", FieldValue.arrayUnion(recipe))
         }
+    }
+
+    override fun getAllIngredients() {
+
+        db.collection(RECIPES_COLLECTION)
+            .get()
+            .addOnSuccessListener { result ->
+                val ingredients = HashSet<RecipeIngredient>()
+                for (document in result) {
+                    val recipeItem = document.toObject(RecipeItem::class.java)
+                    ingredients.addAll(recipeItem.ingredients)
+                }
+                backendListener.onGetAllIngredients(ingredients.toList())
+            }
+    }
+
+    override fun searchRecipesUsing(ingredientsToSearch: List<RecipeIngredient>) {
+        db.collection(RECIPES_COLLECTION)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val validRecipes = ArrayList<RecipeItem>()
+                for (document in snapshot) {
+                    val recipe = document.toObject(RecipeItem::class.java)
+                    if (recipe.ingredients.containsAll(ingredientsToSearch)) {
+                        validRecipes.add(recipe)
+                    }
+                }
+                backendListener.onSearchRecipesUsing(validRecipes)
+            }
     }
 
 }

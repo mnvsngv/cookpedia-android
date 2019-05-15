@@ -29,11 +29,11 @@ class RecipeGridFragment : Fragment(), BackendListener, RecipeGridViewAdapter.Re
     ): View? {
         // Inflate the layout for this fragment
         var mFragView = inflater.inflate(R.layout.fragment_recipe_grid, container, false)
-        recipe_recycler_view = mFragView.findViewById(R.id.recipe_grid_view)
+        recipe_recycler_view = mFragView.findViewById(R.id.list)
         recipe_recycler_view?.layoutManager = GridLayoutManager(context,2)
 
 
-        recipe_list = backend.readAllRecipes()
+//        recipeList = backend.readAllRecipes()
         recipeAdapter = RecipeGridViewAdapter(context, recipe_list, this)
         recipe_recycler_view?.adapter = recipeAdapter
 
