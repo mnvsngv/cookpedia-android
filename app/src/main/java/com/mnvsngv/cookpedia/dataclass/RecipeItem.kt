@@ -9,7 +9,7 @@ data class RecipeItem(
     val name: String = "",
     var image: String = "",
     val steps: ArrayList<RecipeStep> = arrayListOf(),
-    val ingredients: List<RecipeIngredient>
+    val ingredients: List<RecipeIngredient> = arrayListOf()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),

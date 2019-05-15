@@ -45,7 +45,7 @@ class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.Rec
         recipe_recycler_view.hasFixedSize()
 
 //        Reading all recipes from the backend and displaying them in the recycler view
-        recipe_list = backend.readAllRecipes()
+//        recipe_list = backend.readAllRecipes()
         recipeAdapter = RecipeDisplayAdapter(context, recipe_list, this)
         recipe_recycler_view.adapter = recipeAdapter
 

@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
@@ -49,18 +50,17 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         }
     }
 
-    override fun readAllRecipes(): MutableList<RecipeItem> {
+    override fun readAllRecipes() {
         var recipeCollection = db.collection(RECIPES_COLLECTION)
 
-        recipeList.clear()
         recipeCollection.get().addOnSuccessListener { result ->
+            val recipes = ArrayList<RecipeItem>()
             for (document in result) {
                 val recipeItem = document.toObject(RecipeItem::class.java)
-                recipeList.add(recipeItem)
-                backendListener.notifyChange()
+                recipes.add(recipeItem)
             }
+            backendListener.onReadAllRecipes(recipes)
         }
-        return recipeList
     }
 
     override fun readUserRecipes(): MutableList<RecipeItem> {

@@ -15,7 +15,7 @@ class RecipeViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(com.mnvsngv.cookpedia.R.layout.activity_recipe_view)
 
-        val recipe = intent.getParcelableExtra<RecipeItem>("HOOYOO")
+        val recipe = intent.getParcelableExtra<RecipeItem>(RECIPE_KEY)
         recipeName.text = recipe.name
         Log.i("RecipeViewActivity", "Steps: ${recipe.steps.size}")
         list.layoutManager = LinearLayoutManager(this)

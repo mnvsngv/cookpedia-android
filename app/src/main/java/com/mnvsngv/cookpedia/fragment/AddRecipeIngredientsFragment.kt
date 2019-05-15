@@ -48,7 +48,7 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
         val cachedIngredients = getIngredients()
         ingredients.removeAll { true }
         ingredients.addAll(cachedIngredients)
-        ingredients.add(RecipeIngredient("", 0))
+        ingredients.add(RecipeIngredient("", ""))
 
         if (view?.list is RecyclerView) {
             with(view?.list) {
@@ -69,8 +69,7 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
                     val nextIngredient = getChildViewHolder(getChildAt(i))
                     if (nextIngredient is AddRecipeIngredientsAdapter.ViewHolder) {
                         val content = nextIngredient.mContentView?.text.toString()
-                        val quantityString = nextIngredient.mQuantityView?.text.toString()
-                        val quantity = if (quantityString.isNotEmpty()) quantityString.toInt() else 0
+                        val quantity = nextIngredient.mQuantityView?.text.toString()
 
                         if (content.isNotEmpty()) {
                             finalIngredients.add(RecipeIngredient(content, quantity))
