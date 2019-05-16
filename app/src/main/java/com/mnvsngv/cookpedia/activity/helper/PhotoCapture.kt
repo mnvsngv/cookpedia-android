@@ -19,7 +19,7 @@ const val GET_PHOTO = 1
 
 
 // TODO Manav: Review & document this class with comments
-class PhotoCapture {
+class PhotoCapture(private val activityCode: Int = GET_PHOTO) {
 
     var photoUri: Uri? = null
     private lateinit var context: Context
@@ -84,7 +84,7 @@ class PhotoCapture {
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                GET_PHOTO -> {
+                activityCode -> {
                     data?.let {
                         photoUri = it.data as Uri
                     }

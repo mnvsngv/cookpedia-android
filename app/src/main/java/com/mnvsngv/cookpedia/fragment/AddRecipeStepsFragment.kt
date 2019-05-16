@@ -1,6 +1,7 @@
 package com.mnvsngv.cookpedia.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.mnvsngv.cookpedia.R
+import com.mnvsngv.cookpedia.activity.helper.PhotoCapture
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
@@ -24,9 +26,10 @@ private const val INGREDIENTS_KEY = "ingredients"
 class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapter.RecipeStepAdapterListener {
 
     private val steps = ArrayList<RecipeStep>()
+    private val photoHelpers = ArrayList<PhotoCapture>()
     private val backend = BackendFactory.getInstance(this)
     private lateinit var ingredients: List<RecipeIngredient>
-    private lateinit var listener : AddRecipeStepsListener
+    private lateinit var stepsListener : AddRecipeStepsListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +60,7 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
                 steps,
                 ingredients
             )
-            listener.afterAddSteps(recipe)
+            stepsListener.afterAddSteps(recipe)
         }
 
         return view
@@ -65,17 +68,33 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        listener = context as AddRecipeStepsListener
+        stepsListener = context as AddRecipeStepsListener
     }
 
     override fun onAddStep() {
         addStep()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        photoHelpers[requestCode].onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onAddPhotoFor(step: RecipeStep) {
+        val stepIndex = step.stepNumber-1
+        val helper = photoHelpers[stepIndex]
+        startActivityForResult(helper.newIntent(this.context as Context) {
+//            stepsListener.afterAddPhoto(helper.photoUri)
+//            with ((view?.recipeImage) as ImageView) {
+//                Glide.with(this.context as Context).load(photoHelper.photoUri).into(this)
+//                alpha = 1f
+//            }
+            steps[stepIndex].imageSource = helper.photoUri.toString()
+            view?.list?.adapter?.notifyDataSetChanged()
+        }, stepIndex)
+    }
+
     private fun addStep() {
-//        val stepsCache = getRecipe().steps
-//        steps.removeAll { true }
-//        steps.addAll(stepsCache)
+        photoHelpers.add(PhotoCapture(steps.size))
         steps.add(RecipeStep("", "", steps.size + 1))
 
         if (view?.list is RecyclerView) {
