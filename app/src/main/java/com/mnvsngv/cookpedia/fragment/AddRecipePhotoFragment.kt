@@ -76,7 +76,7 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
 
     // TODO Change to Listener
     interface OnFragmentInteractionListener {
-        fun afterAddPhoto(uri: Uri)
+        fun afterAddPhoto(uri: Uri?)
         fun afterRecipeUpload()
     }
 

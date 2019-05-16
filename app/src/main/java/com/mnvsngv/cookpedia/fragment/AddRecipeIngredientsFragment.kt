@@ -27,14 +27,14 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_recipe_ingredients, container, false)
 
-        if (ingredients.size == 0) onAddIngredient()
+        if (ingredients.size == 0) ingredients.add(RecipeIngredient("", ""))
 
         with(view.list) {
             layoutManager = LinearLayoutManager(context)
             adapter = AddRecipeIngredientsAdapter(ingredients, this@AddRecipeIngredientsFragment)
         }
 
-        view.addIngredientsFab.setOnClickListener { listener.afterAddIngredients(getIngredients()) }
+        view.addIngredientsFab.setOnClickListener { listener.afterAddIngredients(ingredients) }
 
         return view
     }
@@ -45,9 +45,7 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
     }
 
     override fun onAddIngredient() {
-        val cachedIngredients = getIngredients()
-        ingredients.removeAll { true }
-        ingredients.addAll(cachedIngredients)
+//        ingredients[ingredients.size-1] = getNewestIngredient()
         ingredients.add(RecipeIngredient("", ""))
 
         if (view?.list is RecyclerView) {
@@ -58,29 +56,6 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
                 }
             }
         }
-    }
-
-    private fun getIngredients(): List<RecipeIngredient> {
-        if (view?.list is RecyclerView) {
-            with(view?.list as RecyclerView) {
-
-                val finalIngredients = ArrayList<RecipeIngredient>()
-                for (i in 0 until (adapter as AddRecipeIngredientsAdapter).itemCount - 1) {
-                    val nextIngredient = getChildViewHolder(getChildAt(i))
-                    if (nextIngredient is AddRecipeIngredientsAdapter.ViewHolder) {
-                        val content = nextIngredient.mContentView?.text.toString()
-                        val quantity = nextIngredient.mQuantityView?.text.toString()
-
-                        if (content.isNotEmpty()) {
-                            finalIngredients.add(RecipeIngredient(content, quantity))
-                        }
-                    }
-                }
-                return finalIngredients
-            }
-        }
-        return listOf()
-
     }
 
 

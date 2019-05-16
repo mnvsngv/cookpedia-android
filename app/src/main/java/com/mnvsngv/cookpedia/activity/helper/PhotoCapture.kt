@@ -21,7 +21,7 @@ const val GET_PHOTO = 1
 // TODO Manav: Review & document this class with comments
 class PhotoCapture {
 
-    lateinit var photoUri: Uri
+    var photoUri: Uri? = null
     private lateinit var context: Context
     private lateinit var onPhotoCapture: () -> Unit
 
@@ -97,9 +97,11 @@ class PhotoCapture {
     }
 
     fun deletePhoto() {
-        if (photoUri.authority == "com.mnvsngv.mnvsngv.fileprovider") {
-            // Clean up after upload
-            context.contentResolver.delete(photoUri, null, null)
+        photoUri?.let { uri ->
+            if (uri.authority == "com.mnvsngv.mnvsngv.fileprovider") {
+                // Clean up after upload
+                context.contentResolver.delete(uri, null, null)
+            }
         }
     }
 

@@ -38,8 +38,9 @@ class AddRecipeActivity : AppCompatActivity(),
         replaceWithFragment(AddRecipePhotoFragment.newInstance(recipe))
     }
 
-    override fun afterAddPhoto(uri: Uri) {
+    override fun afterAddPhoto(uri: Uri?) {
         recipe.image = uri.toString()
+
     }
 
     override fun afterRecipeUpload() {

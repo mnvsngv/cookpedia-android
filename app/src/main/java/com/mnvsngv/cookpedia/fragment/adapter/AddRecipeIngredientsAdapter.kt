@@ -5,23 +5,27 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
+import com.mnvsngv.cookpedia.fragment.adapter.listener.TextChangedListener
 import kotlinx.android.synthetic.main.add_ingredient_button.view.*
 import kotlinx.android.synthetic.main.fragment_add_ingredient.view.*
 import kotlinx.android.synthetic.main.fragment_add_step.view.content
 
 
 class AddRecipeIngredientsAdapter(
-    private val mValues: List<RecipeIngredient>,
+    private val mValues: MutableList<RecipeIngredient>,
     private val listener: RecipeIngredientsListener
 ) : RecyclerView.Adapter<AddRecipeIngredientsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(viewType, parent, false)
+
+
 
         return ViewHolder(view)
     }
@@ -30,12 +34,20 @@ class AddRecipeIngredientsAdapter(
 
         if (position == mValues.size) {
             holder.mButton?.setOnClickListener {
-                listener.onAddIngredient()
+                if (mValues[position-1].name.isNotEmpty()) {
+                    listener.onAddIngredient()
+                }
             }
         } else {
+            holder.nameChangedListener.updatePosition(position)
+            holder.quantityChangedListener.updatePosition(position)
             val ingredient = mValues[position]
-            holder.mContentView?.text = ingredient.name
-            holder.mQuantityView?.text = ingredient.quantity.toString()
+            holder.mContentView?.setText(ingredient.name, TextView.BufferType.EDITABLE)
+            holder.mQuantityView?.text = ingredient.quantity
+
+            if (position == mValues.size - 1) {
+                holder.mContentView?.requestFocus()
+            }
 
             with(holder.mView) {
                 tag = ingredient
@@ -58,9 +70,16 @@ class AddRecipeIngredientsAdapter(
 
     // TODO Rename variables
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mContentView: TextView? = mView.content
+        val mContentView: EditText? = mView.content
         val mQuantityView: TextView? = mView.quantity
         val mButton: ImageButton? = mView.addIngredientButton
+        val nameChangedListener = TextChangedListener { position, s -> mValues[position].name = s }
+        val quantityChangedListener = TextChangedListener { position, s -> mValues[position].quantity = s }
+
+        init {
+            mContentView?.addTextChangedListener(nameChangedListener)
+            mQuantityView?.addTextChangedListener(quantityChangedListener)
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView?.text + "'"

@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.dataclass.RecipeStep
+import com.mnvsngv.cookpedia.fragment.adapter.listener.TextChangedListener
 import kotlinx.android.synthetic.main.add_step_button.view.*
 import kotlinx.android.synthetic.main.fragment_add_step.view.*
 
@@ -32,12 +33,19 @@ class AddRecipeStepsAdapter(
 
         if (position == mValues.size) {
             holder.mButton?.setOnClickListener {
-                listener.onAddStep()
+                if (mValues[position-1].description.isNotEmpty()) {
+                    listener.onAddStep()
+                }
             }
         } else {
+            holder.stepChangedListener.updatePosition(position)
             val item = mValues[position]
             holder.mIdView?.text = item.stepNumber.toString()
             holder.mContentView?.text = item.description
+
+            if (position == mValues.size - 1) {
+                holder.mContentView?.requestFocus()
+            }
 
             with(holder.mView) {
                 tag = item
@@ -57,6 +65,11 @@ class AddRecipeStepsAdapter(
         val mIdView: TextView? = mView.item_number
         val mContentView: TextView? = mView.content
         val mButton: ImageButton? = mView.addStepButton
+        val stepChangedListener = TextChangedListener { position, s -> mValues[position].description = s }
+
+        init {
+            mContentView?.addTextChangedListener(stepChangedListener)
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView?.text + "'"

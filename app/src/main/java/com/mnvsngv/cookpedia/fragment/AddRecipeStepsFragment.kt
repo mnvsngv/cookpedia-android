@@ -23,7 +23,7 @@ private const val INGREDIENTS_KEY = "ingredients"
 
 class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapter.RecipeStepAdapterListener {
 
-    private val steps: MutableList<RecipeStep> = ArrayList()
+    private val steps = ArrayList<RecipeStep>()
     private val backend = BackendFactory.getInstance(this)
     private lateinit var ingredients: List<RecipeIngredient>
     private lateinit var listener : AddRecipeStepsListener
@@ -50,7 +50,15 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
             }
         }
 
-        view.submitRecipeFab.setOnClickListener { listener.afterAddSteps(getRecipe()) }
+        view.submitRecipeFab.setOnClickListener {
+            val recipe = RecipeItem(
+                view?.recipeNameInput?.text.toString(),
+                "",
+                steps,
+                ingredients
+            )
+            listener.afterAddSteps(recipe)
+        }
 
         return view
     }
@@ -65,9 +73,9 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
     }
 
     private fun addStep() {
-        val stepsCache = getRecipe().steps
-        steps.removeAll { true }
-        steps.addAll(stepsCache)
+//        val stepsCache = getRecipe().steps
+//        steps.removeAll { true }
+//        steps.addAll(stepsCache)
         steps.add(RecipeStep("", "", steps.size + 1))
 
         if (view?.list is RecyclerView) {
@@ -78,32 +86,6 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
                 }
             }
         }
-    }
-
-    private fun getRecipe(): RecipeItem {
-        if (view?.list is RecyclerView) {
-            with(view?.list as RecyclerView) {
-
-                val finalSteps = ArrayList<RecipeStep>()
-                for (i in 0 until (adapter as AddRecipeStepsAdapter).itemCount - 1) {
-                    val nextStep = getChildViewHolder(getChildAt(i))
-                    if (nextStep is AddRecipeStepsAdapter.ViewHolder) {
-                        val step = nextStep.mContentView?.text.toString()
-                        if (step.isNotEmpty()) {
-                            finalSteps.add(RecipeStep(step, "", finalSteps.size + 1))
-                        }
-                    }
-                }
-
-                return RecipeItem(
-                    view?.recipeNameInput?.text.toString(),
-                    "",
-                    finalSteps,
-                    ingredients
-                )
-            }
-        }
-        return RecipeItem("", "", arrayListOf(), listOf())
     }
 
     // TODO Listener
