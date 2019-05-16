@@ -17,6 +17,8 @@ import kotlin.collections.ArrayList
 
 const val GET_PHOTO = 1
 
+
+// TODO Manav: Review & document this class with comments
 class PhotoCapture {
 
     lateinit var photoUri: Uri
