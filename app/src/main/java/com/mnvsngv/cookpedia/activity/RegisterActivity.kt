@@ -10,20 +10,21 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.mnvsngv.cookpedia.R
-import com.mnvsngv.cookpedia.backend.Backend
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 import kotlinx.android.synthetic.main.activity_register.*
 
+
+// TODO Remove toasts
 class RegisterActivity : AppCompatActivity(), BackendListener {
 
-    private lateinit var backend :Backend
+    private val backend = BackendFactory.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        backend = BackendFactory.getInstance(this)
+        // TODO Remove login button, user can go back to log in or registration will log them in
         loginButton.setOnClickListener {
             val loginIntent = Intent(this, LoginActivity::class.java)
             Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
@@ -51,6 +52,7 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
         backend.registerUser(email, password, fullName, username)
     }
 
+    // TODO Cleanup
     private fun areInputsValid(): Boolean {
         val isValidEmail = validate(emailInput, R.string.invalid_email) {
             TextUtils.isEmpty(it) || !Patterns.EMAIL_ADDRESS.matcher(it).matches()

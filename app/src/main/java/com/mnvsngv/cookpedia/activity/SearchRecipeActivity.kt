@@ -11,6 +11,7 @@ import com.mnvsngv.cookpedia.fragment.RecipeListFragment
 import com.mnvsngv.cookpedia.fragment.SelectIngredientsFragment
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 
+
 class SearchRecipeActivity : AppCompatActivity(), SelectIngredientsFragment.Listener, BackendListener {
 
     private val backend = BackendFactory.getInstance(this)

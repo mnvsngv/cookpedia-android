@@ -7,7 +7,6 @@ import android.os.Parcelable
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
@@ -22,9 +21,15 @@ import java.util.ArrayList
 private const val ADD_RECIPE = 1
 const val RECIPE_KEY = "recipe"
 
+// TODO Rename XML variables
+// TODO Remove dead code & layout files
+// TODO Rename layout files and Kotlin files for naming consistency
+
+// TODO Code cleanup
 class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter.RecipeDisplayAdapterListener {
 
 
+    // TODO use list instead of mutable list if possible
     var recipes: MutableList<RecipeItem> = mutableListOf()
     var ingredients: MutableList<RecipeIngredient> = mutableListOf()
     private val backend = BackendFactory.getInstance(this)
@@ -53,7 +58,6 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
     }
 
     override fun onReadAllRecipes(recipes: List<RecipeItem>) {
-        Log.i("tagger", "onReadAllRecipes")
         this.recipes.clear()
         this.recipes.addAll(recipes)
         list?.adapter?.notifyDataSetChanged()
@@ -72,11 +76,9 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
 //    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.i("tagger", "onActivityResult")
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 ADD_RECIPE -> {
-                    Log.i("tagger", "ADD_RECIPE")
                     backend.readAllRecipes()
                 }
             }

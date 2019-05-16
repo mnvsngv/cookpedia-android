@@ -9,7 +9,8 @@ import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import kotlinx.android.synthetic.main.select_ingredient.view.*
 
-//Adapter class to display the recycler view
+
+// TODO Code cleanup
 class SelectIngredientsAdapter(
     private val ingredients: List<RecipeIngredient>,
     private val listener: Listener
@@ -42,6 +43,7 @@ class SelectIngredientsAdapter(
         fun onIngredientChecked(ingredient: RecipeIngredient, selected: Boolean)
     }
 
+    // TODO Rename class
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var ingredientSelected: CheckBox = view.ingredientSelected
     }

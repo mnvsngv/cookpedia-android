@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.recipe_griditem_home.view.*
 class RecipeGridViewAdapter(
     private val context: Context?,
     private val recipeList: List<RecipeItem>,
-    private val listener: RecipeGridViewAdapter.RecipeDisplayAdapterListener
+    private val listener: RecipeDisplayAdapterListener
 ) : RecyclerView.Adapter<RecipeGridViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,12 +53,14 @@ class RecipeGridViewAdapter(
 
     override fun getItemCount(): Int = recipeList.size
 
+    // TODO Rename to Listener
     interface RecipeDisplayAdapterListener {
         fun onRecipeClick(recipe: RecipeItem)
     }
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        var recipeName: TextView = mView.recipeName
-        var recipeImage: ImageView = mView.imageRecipe
+    // TODO Rename variables
+    inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
+        val recipeName: TextView = mView.recipeName
+        val recipeImage: ImageView = mView.imageRecipe
     }
 }

@@ -12,6 +12,7 @@ import com.mnvsngv.cookpedia.fragment.AddRecipeIngredientsFragment
 import com.mnvsngv.cookpedia.fragment.AddRecipePhotoFragment
 import com.mnvsngv.cookpedia.fragment.AddRecipeStepsFragment
 
+
 class AddRecipeActivity : AppCompatActivity(),
         AddRecipeIngredientsFragment.AddRecipeIngredientsListener,
         AddRecipeStepsFragment.AddRecipeStepsListener,
@@ -22,7 +23,6 @@ class AddRecipeActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_recipe)
-
 
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragmentContainer, AddRecipeIngredientsFragment())
