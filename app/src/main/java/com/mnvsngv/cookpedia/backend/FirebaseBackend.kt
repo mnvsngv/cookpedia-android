@@ -15,7 +15,10 @@ private const val USERS_COLLECTION = "Users"
 private const val RECIPES_COLLECTION = "Recipes"
 
 // TODO Remove this variable
-private var recipeList: MutableList<RecipeItem> = mutableListOf()
+private var recipeList: List<RecipeItem> = arrayListOf()
+private lateinit var recipeCollection : Query
+private lateinit var docRef: DocumentReference
+
 
 // TODO Code cleanup
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
@@ -64,16 +67,18 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         }
     }
 
-    override fun readUserRecipes(): MutableList<RecipeItem> {
+    override fun readUserRecipes() {
         var current_user = auth.currentUser?.email
 
         current_user?.let {
-            db.collection(USERS_COLLECTION).document(current_user).get().addOnSuccessListener { task ->
-                recipeList = task.get("user_recipes") as MutableList<RecipeItem>
-                backendListener.notifyChange()
+            db.collection(USERS_COLLECTION).document(current_user).get().addOnCompleteListener { task ->
+                var user = task.result?.toObject(User::class.java)
+                user?.let {
+                    recipeList = it.user_recipes
+                }
+                backendListener.onReadAllRecipes(recipeList)
             }
         }
-        return recipeList
     }
 
     override fun addRecipe(recipe: RecipeItem) {

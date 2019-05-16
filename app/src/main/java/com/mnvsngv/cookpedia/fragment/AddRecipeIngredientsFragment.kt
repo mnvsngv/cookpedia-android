@@ -31,7 +31,7 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
 
         with(view.list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = AddRecipeIngredientsAdapter(ingredients, this@AddRecipeIngredientsFragment)
+            adapter = AddRecipeIngredientsAdapter(context,ingredients, this@AddRecipeIngredientsFragment)
         }
 
         view.addIngredientsFab.setOnClickListener { listener.afterAddIngredients(ingredients) }
@@ -50,7 +50,7 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
 
         if (view?.list is RecyclerView) {
             with(view?.list) {
-                if(this != null) {
+                if (this != null) {
                     adapter?.notifyDataSetChanged()
                     scrollToPosition(ingredients.size)
                 }

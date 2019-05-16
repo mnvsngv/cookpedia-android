@@ -3,6 +3,7 @@ package com.mnvsngv.cookpedia.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,20 +22,22 @@ import kotlinx.android.synthetic.main.fragment_add_recipe_list.view.*
 import java.io.Serializable
 
 
-private const val INGREDIENTS_KEY = "ingredients"
+const val INGREDIENTS_KEY = "ingredients"
 
 class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapter.RecipeStepAdapterListener {
 
     private val steps = ArrayList<RecipeStep>()
     private val photoHelpers = ArrayList<PhotoCapture>()
     private val backend = BackendFactory.getInstance(this)
-    private lateinit var ingredients: List<RecipeIngredient>
+    private lateinit var ingredients: ArrayList<RecipeIngredient?>
     private lateinit var stepsListener : AddRecipeStepsListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ingredients = arguments?.getSerializable(INGREDIENTS_KEY) as List<RecipeIngredient>
+        arguments?.let {
+            ingredients = it.getSerializable(com.mnvsngv.cookpedia.fragment.INGREDIENTS_KEY) as ArrayList<RecipeIngredient?>
+        }
     }
 
     override fun onCreateView(
@@ -117,7 +120,7 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
         fun newInstance(ingredients: List<RecipeIngredient>): AddRecipeStepsFragment {
             return AddRecipeStepsFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(INGREDIENTS_KEY, ingredients as Serializable)
+                    putParcelableArrayList(INGREDIENTS_KEY, ingredients as ArrayList<Parcelable>)
                 }
             }
         }
