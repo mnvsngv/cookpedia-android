@@ -2,38 +2,37 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              android:layout_width="match_parent"
-                                             android:layout_height="wrap_content"
-                                             android:orientation="horizontal"
-                                             >
+                                             android:layout_height="wrap_content">
 
-    <EditText
-            android:id="@+id/content"
+    <TextView
+            android:id="@+id/ingName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50sp"
             android:textAppearance="?attr/textAppearanceListItem"
             android:inputType="text"
             android:hint="@string/ingredient_hint"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/quantity"
-            app:layout_constraintWidth_percent="0.6"/>
-    <EditText
+            app:layout_constraintRight_toLeftOf="@id/ingQuantity"
+            app:layout_constraintWidth_percent="0.6"
+    />
+    <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:inputType="number"
-            android:id="@+id/quantity" app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/ingQuantity" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/content"
+            app:layout_constraintLeft_toRightOf="@id/ingName"
             android:hint="@string/quantity_hint"
             app:layout_constraintWidth_percent="0.1"/>
-    <Spinner
+    <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/serving"
+            android:layout_height="0dp"
+            android:id="@+id/ingServing"
             app:layout_constraintWidth_percent="0.3"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/quantity"
+            app:layout_constraintLeft_toRightOf="@id/ingQuantity"
             app:layout_constraintRight_toRightOf="parent"
             android:entries="@array/spinnerItems"
             android:prompt="@string/serving_text"/>

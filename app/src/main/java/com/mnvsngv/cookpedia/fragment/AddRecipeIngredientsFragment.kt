@@ -15,8 +15,8 @@ import com.mnvsngv.cookpedia.fragment.adapter.AddRecipeIngredientsAdapter
 import kotlinx.android.synthetic.main.fragment_add_recipe_ingredients.view.*
 
 
-class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.RecipeIngredientsListener {
-
+class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.RecipeIngredientsListener
+     {
     private val ingredients: MutableList<RecipeIngredient> = ArrayList()
     private lateinit var listener: AddRecipeIngredientsListener
 
@@ -31,7 +31,7 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
 
         with(view.list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = AddRecipeIngredientsAdapter(ingredients, this@AddRecipeIngredientsFragment)
+            adapter = AddRecipeIngredientsAdapter(context,ingredients, this@AddRecipeIngredientsFragment)
         }
 
         view.addIngredientsFab.setOnClickListener { listener.afterAddIngredients(getIngredients()) }
@@ -48,11 +48,11 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
         val cachedIngredients = getIngredients()
         ingredients.removeAll { true }
         ingredients.addAll(cachedIngredients)
-        ingredients.add(RecipeIngredient("", ""))
+        ingredients.add(RecipeIngredient("", "", ""))
 
         if (view?.list is RecyclerView) {
             with(view?.list) {
-                if(this != null) {
+                if (this != null) {
                     adapter?.notifyDataSetChanged()
                     scrollToPosition(ingredients.size)
                 }
@@ -70,9 +70,10 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
                     if (nextIngredient is AddRecipeIngredientsAdapter.ViewHolder) {
                         val content = nextIngredient.mContentView?.text.toString()
                         val quantity = nextIngredient.mQuantityView?.text.toString()
+                        val serving = nextIngredient.mServingView?.selectedItem.toString()
 
                         if (content.isNotEmpty()) {
-                            finalIngredients.add(RecipeIngredient(content, quantity))
+                            finalIngredients.add(RecipeIngredient(content, quantity, serving))
                         }
                     }
                 }

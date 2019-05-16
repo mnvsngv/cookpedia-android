@@ -10,7 +10,7 @@ interface Backend {
     fun addRecipe(recipe: RecipeItem)
     fun readAllRecipes()
     fun updateUserRecipes(recipe: RecipeItem)
-    fun readUserRecipes() : MutableList<RecipeItem> // TODO Remove the return value
+    fun readUserRecipes(
     fun getAllIngredients()
     fun searchRecipesUsing(ingredientsToSearch: List<RecipeIngredient>)
 }

@@ -51,5 +51,7 @@
     <string name="recipe_name_hint">Recipe Name…</string>
     <string name="recipeText">My Magic Recipes</string>
     <string name="ingredient_hint">Next Ingredient...</string>
-    <string name="quantity_hint">Quantity...</string>
+    <string name="quantity_hint">Qty</string>
+    <string name="serving_text">serving</string>
+    <string name="ingredients">Ingredients</string>
 </resources>
