@@ -19,7 +19,6 @@ import com.mnvsngv.cookpedia.dataclass.RecipeStep
 import com.mnvsngv.cookpedia.fragment.adapter.AddRecipeStepsAdapter
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 import kotlinx.android.synthetic.main.fragment_add_recipe_list.view.*
-import java.io.Serializable
 
 
 const val INGREDIENTS_KEY = "ingredients"
@@ -29,14 +28,14 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
     private val steps = ArrayList<RecipeStep>()
     private val photoHelpers = ArrayList<PhotoCapture>()
     private val backend = BackendFactory.getInstance(this)
-    private lateinit var ingredients: ArrayList<RecipeIngredient?>
+    private lateinit var ingredients: ArrayList<RecipeIngredient>
     private lateinit var stepsListener : AddRecipeStepsListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            ingredients = it.getSerializable(com.mnvsngv.cookpedia.fragment.INGREDIENTS_KEY) as ArrayList<RecipeIngredient?>
+            ingredients = it.getSerializable(INGREDIENTS_KEY) as ArrayList<RecipeIngredient>
         }
     }
 

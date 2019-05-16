@@ -14,11 +14,6 @@ import com.mnvsngv.cookpedia.dataclass.User
 private const val USERS_COLLECTION = "Users"
 private const val RECIPES_COLLECTION = "Recipes"
 
-// TODO Remove this variable
-private var recipeList: List<RecipeItem> = arrayListOf()
-private lateinit var recipeCollection : Query
-private lateinit var docRef: DocumentReference
-
 
 // TODO Code cleanup
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
@@ -74,9 +69,8 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
             db.collection(USERS_COLLECTION).document(current_user).get().addOnCompleteListener { task ->
                 var user = task.result?.toObject(User::class.java)
                 user?.let {
-                    recipeList = it.user_recipes
+                    backendListener.onReadAllRecipes(it.user_recipes)
                 }
-                backendListener.onReadAllRecipes(recipeList)
             }
         }
     }

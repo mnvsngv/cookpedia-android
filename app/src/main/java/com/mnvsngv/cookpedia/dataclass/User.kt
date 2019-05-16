@@ -2,10 +2,10 @@ package com.mnvsngv.cookpedia.dataclass
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.util.ArrayList
+import java.util.*
 
 data class User(
-    val email: String, val username: String, val name: String, val user_recipes: ArrayList<Any> = arrayListOf()
+    val email: String, val username: String, val name: String, val user_recipes: ArrayList<RecipeItem> = arrayListOf()
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
