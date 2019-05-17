@@ -84,7 +84,6 @@ class AddRecipeIngredientsAdapter(
         fun onAddIngredient()
     }
 
-    // TODO Rename variables
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mContentView: EditText? = mView.content
         val mQuantityView: TextView? = mView.quantity

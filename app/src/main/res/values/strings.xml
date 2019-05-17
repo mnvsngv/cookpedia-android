@@ -46,8 +46,6 @@
     <string name="add_step">Add Step</string>
     <string name="submit_recipe">Submit Recipe</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recipe_name_hint">Recipe Name…</string>
     <string name="recipeText">My Magic Recipes</string>
     <string name="ingredient_hint">Next Ingredient…</string>

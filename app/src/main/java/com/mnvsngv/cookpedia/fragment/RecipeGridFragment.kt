@@ -17,7 +17,7 @@ import com.mnvsngv.cookpedia.fragment.adapter.RecipeGridViewAdapter
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 
 // TODO Code cleanup
-class RecipeGridFragment : Fragment(), BackendListener, RecipeGridViewAdapter.RecipeDisplayAdapterListener {
+class RecipeGridFragment : Fragment(), BackendListener, RecipeGridViewAdapter.Listener {
 
     var recipe_list: MutableList<RecipeItem> = mutableListOf()
     private lateinit var backend : Backend

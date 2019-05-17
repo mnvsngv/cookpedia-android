@@ -23,13 +23,13 @@ import kotlinx.android.synthetic.main.fragment_add_recipe_list.view.*
 
 const val INGREDIENTS_KEY = "ingredients"
 
-class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapter.RecipeStepAdapterListener {
+class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapter.Listener {
 
     private val steps = ArrayList<RecipeStep>()
     private val photoHelpers = ArrayList<PhotoCapture>()
     private val backend = BackendFactory.getInstance(this)
     private lateinit var ingredients: ArrayList<RecipeIngredient>
-    private lateinit var stepsListener : AddRecipeStepsListener
+    private lateinit var stepsListener : Listener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +67,7 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        stepsListener = context as AddRecipeStepsListener
+        stepsListener = context as Listener
     }
 
     override fun onAddStep() {
@@ -106,8 +106,7 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
         }
     }
 
-    // TODO Listener
-    interface AddRecipeStepsListener {
+    interface Listener {
         fun afterAddSteps(recipe: RecipeItem)
     }
 

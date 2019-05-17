@@ -4,7 +4,6 @@ import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 
 
-// TODO Rename methods so they more closely correspond to Backend functions
 interface BackendListener {
     fun onLoginSuccess() {}
     fun onRegisterSuccess() {}

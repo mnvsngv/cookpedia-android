@@ -23,7 +23,7 @@ const val RECIPE_KEY = "recipe"
 class AddRecipePhotoFragment : Fragment(), BackendListener {
 
     private val backend = BackendFactory.getInstance(this)
-    private lateinit var listener: OnFragmentInteractionListener
+    private lateinit var listener: Listener
     private val photoHelper = PhotoCapture()
     private lateinit var recipe: RecipeItem
 
@@ -51,7 +51,7 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        listener = context as OnFragmentInteractionListener
+        listener = context as Listener
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -74,8 +74,7 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
     }
 
 
-    // TODO Change to Listener
-    interface OnFragmentInteractionListener {
+    interface Listener {
         fun afterAddPhoto(uri: Uri?)
         fun afterRecipeUpload()
     }

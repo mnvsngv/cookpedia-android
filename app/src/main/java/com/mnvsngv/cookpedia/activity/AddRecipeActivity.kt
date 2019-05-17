@@ -15,8 +15,8 @@ import com.mnvsngv.cookpedia.fragment.AddRecipeStepsFragment
 
 class AddRecipeActivity : AppCompatActivity(),
         AddRecipeIngredientsFragment.Listener,
-        AddRecipeStepsFragment.AddRecipeStepsListener,
-        AddRecipePhotoFragment.OnFragmentInteractionListener {
+        AddRecipeStepsFragment.Listener,
+        AddRecipePhotoFragment.Listener {
 
     private lateinit var recipe: RecipeItem
 

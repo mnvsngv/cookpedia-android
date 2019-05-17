@@ -22,7 +22,7 @@ const val RECIPE_KEY = "recipe"
 // TODO Remove dead code & layout files
 // TODO Rename layout files and Kotlin files for naming consistency
 
-class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter.RecipeDisplayAdapterListener {
+class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter.Listener {
 
     private val recipes = mutableListOf<RecipeItem>()
     private val backend = BackendFactory.getInstance(this)
