@@ -15,8 +15,8 @@
             android:id="@+id/recipeNameInput" android:hint="@string/recipe_name_hint"
             app:layout_constraintBottom_toTopOf="@id/list" app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" android:textSize="@dimen/recipe_name_input_size"
-            android:layout_margin="@dimen/form_padding"/>
+            app:layout_constraintVertical_chainStyle="packed" android:textSize="@dimen/header_size"
+            android:layout_margin="@dimen/form_padding" android:textStyle="italic"/>
     <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
             android:name="com.mnvsngv.cookpedia.fragment.AddRecipeFragment"

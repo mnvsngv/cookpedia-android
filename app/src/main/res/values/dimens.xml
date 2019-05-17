@@ -14,4 +14,5 @@
     <dimen name="image_height">250sp</dimen>
     <dimen name="ingredient_search_height">50sp</dimen>
     <dimen name="header_size">36sp</dimen>
+    <dimen name="recipe_name_display_size">36sp</dimen>
 </resources>

@@ -44,8 +44,7 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_recipe_list, container, false)
-
-        addStep()
+        if (steps.size == 0) steps.add(RecipeStep("", "", steps.size + 1))
 
         // Set the adapter
         if (view.list is RecyclerView) {
@@ -56,12 +55,10 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
         }
 
         view.submitRecipeFab.setOnClickListener {
-            val recipe = RecipeItem(
-                view?.recipeNameInput?.text.toString(),
-                "",
-                steps,
-                ingredients
-            )
+            val lastIndex = steps.size - 1
+            if (lastIndex >= 0 && steps[lastIndex].description.isEmpty()) steps.removeAt(lastIndex)
+
+            val recipe = RecipeItem(view?.recipeNameInput?.text.toString(), "", steps, ingredients)
             stepsListener.afterAddSteps(recipe)
         }
 

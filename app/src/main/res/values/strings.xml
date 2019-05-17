@@ -58,4 +58,5 @@
     <string name="login_failure"><![CDATA[Login failed! Check your username & password!]]></string>
     <string name="add_ingredients_header"><![CDATA[Ingredients & quantities]]></string>
     <string name="invalid_ingredient">Please enter all fields!</string>
+    <string name="add_photo_header">Add a photo?</string>
 </resources>

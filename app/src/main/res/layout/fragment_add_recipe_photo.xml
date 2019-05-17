@@ -6,13 +6,28 @@
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              tools:context=".fragment.AddRecipePhotoFragment"
 >
+    <TextView
+            android:text="@string/add_photo_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/header"
+            app:layout_constraintRight_toRightOf="parent" app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toTopOf="@id/recipeImage"
+            android:textSize="@dimen/header_size" android:textStyle="italic"
+            android:textColor="@android:color/primary_text_light" android:layout_margin="@dimen/form_padding"/>
+    <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/header"/>
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/recipeImage" app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/recipeImage"
             app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent"
             tools:src="@drawable/ic_add_recipe_image_dark" app:srcCompat="@drawable/ic_add_recipe_image_dark"
-            app:layout_constraintBottom_toBottomOf="parent" android:alpha="0.5"/>
+            app:layout_constraintBottom_toBottomOf="parent" android:alpha="0.5"
+            app:layout_constraintTop_toBottomOf="@id/divider"/>
     <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

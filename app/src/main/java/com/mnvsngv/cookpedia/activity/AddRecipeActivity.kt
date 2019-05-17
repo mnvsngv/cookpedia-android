@@ -8,13 +8,13 @@ import android.support.v7.app.AppCompatActivity
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
-import com.mnvsngv.cookpedia.fragment.AddFragment
+import com.mnvsngv.cookpedia.fragment.AddRecipeIngredientsFragment
 import com.mnvsngv.cookpedia.fragment.AddRecipePhotoFragment
 import com.mnvsngv.cookpedia.fragment.AddRecipeStepsFragment
 
 
 class AddRecipeActivity : AppCompatActivity(),
-        AddFragment.AddRecipeIngredientsListener,
+        AddRecipeIngredientsFragment.Listener,
         AddRecipeStepsFragment.AddRecipeStepsListener,
         AddRecipePhotoFragment.OnFragmentInteractionListener {
 
@@ -25,7 +25,7 @@ class AddRecipeActivity : AppCompatActivity(),
         setContentView(R.layout.activity_add_recipe)
 
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragmentContainer, AddFragment())
+        transaction.add(R.id.fragmentContainer, AddRecipeIngredientsFragment())
         transaction.commit()
     }
 

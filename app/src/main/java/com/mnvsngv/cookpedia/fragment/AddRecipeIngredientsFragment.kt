@@ -15,10 +15,10 @@ import com.mnvsngv.cookpedia.fragment.adapter.AddRecipeIngredientsAdapter
 import kotlinx.android.synthetic.main.fragment_add_recipe_ingredients.view.*
 
 
-class AddFragment : Fragment(), AddRecipeIngredientsAdapter.Listener {
+class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Listener {
 
     private val ingredients: MutableList<RecipeIngredient> = ArrayList()
-    private lateinit var listener: AddRecipeIngredientsListener
+    private lateinit var listener: Listener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,17 +31,21 @@ class AddFragment : Fragment(), AddRecipeIngredientsAdapter.Listener {
 
         with(view.list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = AddRecipeIngredientsAdapter(context,ingredients, this@AddFragment)
+            adapter = AddRecipeIngredientsAdapter(context,ingredients, this@AddRecipeIngredientsFragment)
         }
 
-        view.addIngredientsFab.setOnClickListener { listener.afterAddIngredients(ingredients) }
+        view.addIngredientsFab.setOnClickListener {
+            val lastIndex = ingredients.size - 1
+            if (lastIndex >= 0 && ingredients[lastIndex].name.isEmpty()) ingredients.removeAt(lastIndex)
+            listener.afterAddIngredients(ingredients)
+        }
 
         return view
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        listener = context as AddRecipeIngredientsListener
+        listener = context as Listener
     }
 
     override fun onAddIngredient() {
@@ -58,9 +62,7 @@ class AddFragment : Fragment(), AddRecipeIngredientsAdapter.Listener {
         }
     }
 
-
-    // TODO Rename to Listener
-    interface AddRecipeIngredientsListener {
+    interface Listener {
         fun afterAddIngredients(ingredients: List<RecipeIngredient>)
     }
 
