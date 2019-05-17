@@ -80,16 +80,17 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
     override fun addRecipe(recipe: RecipeItem) {
         val photoUri = Uri.parse(recipe.image)
+        val storageRef = storage.reference
+
 
         if (photoUri.lastPathSegment != null) {
             recipe.image = photoUri.lastPathSegment as String
         }
-        val storageRef = storage.reference
 
         db.collection(RECIPES_COLLECTION)
             .add(recipe)
             .addOnSuccessListener { documentReference ->
-                val id = documentReference.id
+                val id = auth.currentUser?.email
                 val photoRef = storageRef.child("$id/${photoUri.lastPathSegment}")
                 photoRef.putFile(photoUri)
                     .addOnCompleteListener {
@@ -134,6 +135,15 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
                 }
                 backendListener.onSearchRecipesUsing(validRecipes)
             }
+    }
+
+    override fun loadImageFrom(path: String, run: (uri: Uri) -> Unit) {
+        auth.currentUser?.email?.let {
+            storage.reference.child(it).child(path).downloadUrl.addOnSuccessListener {uri ->
+                run(uri)
+            }
+        }
+
     }
 
 }

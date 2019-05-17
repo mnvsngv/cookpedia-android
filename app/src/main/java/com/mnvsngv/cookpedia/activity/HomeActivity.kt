@@ -77,7 +77,7 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
             when (requestCode) {
                 ADD_RECIPE -> {
                     Log.i("tagger", "ADD_RECIPE")
-                    backend.readAllRecipes()
+                    backend.readUserRecipes()
                 }
             }
         }
