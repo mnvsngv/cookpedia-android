@@ -83,6 +83,7 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
     }
 
     override fun onLoginFailure() {
+        progressBar.visibility = View.INVISIBLE
         Toast.makeText(this, R.string.login_failure, Toast.LENGTH_SHORT).show()
     }
 }

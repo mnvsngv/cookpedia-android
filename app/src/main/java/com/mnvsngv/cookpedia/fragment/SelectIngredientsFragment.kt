@@ -32,7 +32,7 @@ class SelectIngredientsFragment : Fragment(), BackendListener, SelectIngredients
         view.progressBar.visibility = View.VISIBLE
         selectedIngredients.clear()
         if (ingredients.size == 0) backend.getAllIngredients()
-        else view.progressBar.visibility = View.VISIBLE
+        else view.progressBar.visibility = View.INVISIBLE
 
         view.list?.layoutManager = GridLayoutManager(this.context, 2)
         view.list?.adapter = SelectIngredientsAdapter(ingredients, this)

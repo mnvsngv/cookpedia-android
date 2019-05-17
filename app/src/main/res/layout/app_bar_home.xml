@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
             app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar" android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/myRecipeText" android:visibility="invisible"
             android:indeterminate="true"/>
     <ImageView
             android:src="@drawable/chef_image"

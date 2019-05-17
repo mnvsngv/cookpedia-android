@@ -60,4 +60,5 @@
     <string name="invalid_ingredient">Please enter all fields!</string>
     <string name="add_photo_header">Add a photo?</string>
     <string name="select_ingredients">Recipes with all these…</string>
+    <string name="choose_recipe">Select Recipe</string>
 </resources>

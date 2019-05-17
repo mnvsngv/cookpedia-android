@@ -92,6 +92,7 @@ class RegisterActivity : AppCompatActivity(), BackendListener, TextView.OnEditor
     }
 
     override fun onRegisterFailure() {
+        progressBar.visibility = View.INVISIBLE
         Toast.makeText(this, R.string.registration_failure, Toast.LENGTH_SHORT).show()
     }
 

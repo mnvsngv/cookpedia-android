@@ -6,29 +6,25 @@
                                              android:layout_height="match_parent"
                                              tools:context=".fragment.RecipeListFragment"
                                              android:id="@+id/constraintlayout">
-    <ImageView
-            android:src="@drawable/searchrecipe"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/search_recipe"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.1"
-            app:layout_constraintHeight_percent="0.1"/>
+    <TextView
+            android:text="@string/choose_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/header"
+            app:layout_constraintRight_toRightOf="parent" app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toTopOf="@id/divider"
+            android:textSize="@dimen/header_size" android:textStyle="italic"
+            android:textColor="@android:color/primary_text_light" android:layout_margin="@dimen/form_padding"/>
+    <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/header"/>
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_text"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.9"
             android:paddingTop="15dp"
-            android:id="@+id/list"/>
-    <EditText android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:id="@+id/search_text"
-              app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintLeft_toRightOf="@+id/search_recipe"
-              app:layout_constraintWidth_percent="0.9"
-              app:layout_constraintHeight_percent="0.1"
-              android:inputType="text"/>
+            android:id="@+id/list" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"/>
 
 </android.support.constraint.ConstraintLayout>

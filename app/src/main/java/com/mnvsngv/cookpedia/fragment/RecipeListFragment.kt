@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.activity.RecipeViewActivity
 import com.mnvsngv.cookpedia.backend.BackendListener
@@ -26,7 +25,6 @@ const val RECIPES_KEY = "user_recipes"
 class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.Listener {
 
     private val backend = BackendFactory.getInstance(this)
-    private lateinit var mSearchtext : EditText
     private lateinit var recipeList: List<RecipeItem>
 
 
@@ -39,7 +37,6 @@ class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.Lis
         val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
 
 //        recipe_recycler_view = view.findViewById(R.id.list)
-        mSearchtext = view.findViewById(R.id.search_text)
 
 //        Setting the Layout for the Recycler view to display user_recipes
 //        view.list.hasFixedSize()
