@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
-import android.util.Log
 import android.util.Patterns
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
 import com.mnvsngv.cookpedia.R
@@ -15,8 +16,7 @@ import com.mnvsngv.cookpedia.singleton.BackendFactory
 import kotlinx.android.synthetic.main.activity_register.*
 
 
-// TODO Remove toasts
-class RegisterActivity : AppCompatActivity(), BackendListener {
+class RegisterActivity : AppCompatActivity(), BackendListener, TextView.OnEditorActionListener {
 
     private val backend = BackendFactory.getInstance(this)
 
@@ -24,56 +24,54 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // TODO Remove login button, user can go back to log in or registration will log them in
-        loginButton.setOnClickListener {
-            val loginIntent = Intent(this, LoginActivity::class.java)
-            Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
-            startActivity(loginIntent)
-        }
+        registerButton.setOnClickListener { register() }
+        passwordInput.setOnEditorActionListener(this)
+    }
 
-        registerButton.setOnClickListener {
-            // On clicking the register button, the progress bar is loaded.
-            // Also a mandatory check is performed for all the user input fields in the registration form
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        if (actionId == EditorInfo.IME_ACTION_GO) {
+            register()
+            return true  // Event handled!
+        }
+        return false  // Event not handled!
+    }
+
+    private fun register() {
+        // On registering, the progress bar is loaded.
+        // Also a mandatory check is performed for all the user input fields in the registration form
+        if (areInputsValid()) {
             progressBar.visibility = View.VISIBLE
-            if (!areInputsValid()) {
-                Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show()
-            } else {
-                register(
-                    emailInput.text.toString(),
-                    passwordInput.text.toString(),
-                    fullname.text.toString(),
-                    username.text.toString()
-                )
-            }
+            backend.registerUser(
+                emailInput.text.toString(),
+                passwordInput.text.toString(),
+                fullname.text.toString(),
+                username.text.toString()
+            )
         }
     }
 
-    private fun register(email: String, password: String, fullName: String, username: String) {
-        backend.registerUser(email, password, fullName, username)
-    }
-
-    // TODO Cleanup
     private fun areInputsValid(): Boolean {
-        val isValidEmail = validate(emailInput, R.string.invalid_email) {
-            TextUtils.isEmpty(it) || !Patterns.EMAIL_ADDRESS.matcher(it).matches()
-        }
-
         // The validate() call is done before the AND with isValid.
         // This is because if isValid is false, then validate() is not called as a "shortcut".
         // In that case the user would not see all the invalid inputs at the same time.
-        val isValidPass = validate(passwordInput, R.string.invalid_password) {
-            TextUtils.isEmpty(it)
+
+        var isValid = validate(emailInput, R.string.invalid_email) {
+            TextUtils.isEmpty(it) || !Patterns.EMAIL_ADDRESS.matcher(it).matches()
         }
 
-        val isValidFullname = validate(fullname, R.string.invalid_fullname) {
+        isValid = validate(passwordInput, R.string.invalid_password) {
             TextUtils.isEmpty(it)
-        }
+        } && isValid
 
-        val isValidUsername = validate(username, R.string.invalid_username) {
+        isValid = validate(fullname, R.string.invalid_fullname) {
             TextUtils.isEmpty(it)
-        }
+        } && isValid
 
-        return isValidEmail && isValidPass && isValidFullname && isValidUsername
+        isValid = validate(username, R.string.invalid_username) {
+            TextUtils.isEmpty(it)
+        } && isValid
+
+        return isValid
     }
 
     // Run an invalidation test on a given text field
@@ -87,14 +85,12 @@ class RegisterActivity : AppCompatActivity(), BackendListener {
 
 
     override fun onRegisterSuccess() {
-        val loadCookpedia = Intent(this, HomeActivity::class.java)
-        startActivity(loadCookpedia)
+        startActivity(Intent(this, HomeActivity::class.java))
         finish()
     }
 
     override fun onRegisterFailure() {
-        Log.d("auth", "Register failure invoked")
-        Toast.makeText(this, "User cannot be registered. Please check the details!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.registration_failure, Toast.LENGTH_SHORT).show()
     }
 
 }

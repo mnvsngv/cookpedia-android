@@ -53,7 +53,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logoText"
             android:layout_margin="@dimen/form_padding"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:layout_constraintVertical_chainStyle="packed" android:imeOptions="actionNext"/>
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:layout_margin="@dimen/form_padding"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toTopOf="@+id/fullname"
-            android:imeOptions="actionGo"/>
+            android:imeOptions="actionNext"/>
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -75,13 +75,13 @@
             android:id="@+id/fullname"
             app:layout_constraintRight_toRightOf="parent"
             android:hint="@string/fullname"
-            android:inputType="text"
+            android:inputType="textPersonName"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username"
             android:layout_margin="@dimen/form_padding"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toTopOf="@+id/passwordInput"
-            android:imeOptions="actionGo"/>
+            android:imeOptions="actionNext"/>
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -94,25 +94,16 @@
             app:layout_constraintTop_toBottomOf="@+id/fullname"
             android:layout_margin="@dimen/form_padding"
             app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintBottom_toTopOf="@+id/buttonBar"
+            app:layout_constraintBottom_toTopOf="@+id/registerButton"
             android:imeOptions="actionGo"/>
-    <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/buttonBar"
+    <Button
             app:layout_constraintTop_toBottomOf="@+id/passwordInput"
-            app:layout_constraintHorizontal_weight="1" app:layout_constraintBottom_toBottomOf="parent">
-        <Button
-                android:text="@string/login_button_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/loginButton"
-                app:layout_constraintBaseline_toBaselineOf="@+id/registerButton"
-                app:layout_constraintRight_toLeftOf="@+id/registerButton" app:layout_constraintLeft_toLeftOf="parent"/>
-        <Button
-                android:text="@string/register_button_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/registerButton"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="1dp" app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/loginButton"/>
-    </android.support.constraint.ConstraintLayout>
+            android:text="@string/register_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/registerButton"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+    />
 </android.support.constraint.ConstraintLayout>

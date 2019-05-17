@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
-import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -38,7 +37,6 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
         passwordInput.setOnEditorActionListener(this)
     }
 
-    // TODO Handle ENTER button pressed on the password field
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_GO) {
             if (areInputsValid()) {
@@ -81,7 +79,6 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
     }
 
     override fun onLoginFailure() {
-        Log.d("auth", "Register failure invoked")
-        Toast.makeText(this, "User cannot Login. Please check the email and password!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.login_failure, Toast.LENGTH_SHORT).show()
     }
 }

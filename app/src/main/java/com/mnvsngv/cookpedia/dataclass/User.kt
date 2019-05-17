@@ -5,7 +5,10 @@ import android.os.Parcelable
 import java.util.*
 
 data class User(
-    val email: String, val username: String, val name: String, val user_recipes: ArrayList<RecipeItem> = arrayListOf()
+    val email: String = "",
+    val username: String = "",
+    val name: String = "",
+    val user_recipes: ArrayList<RecipeItem> = arrayListOf()
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(

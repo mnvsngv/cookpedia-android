@@ -54,4 +54,6 @@
     <string name="quantity_hint">Qty</string>
     <string name="serving_text">serving</string>
     <string name="ingredients">Ingredients</string>
+    <string name="registration_failure">Registration failed! Username already exists!</string>
+    <string name="login_failure"><![CDATA[Login failed! Check your username & password!]]></string>
 </resources>
