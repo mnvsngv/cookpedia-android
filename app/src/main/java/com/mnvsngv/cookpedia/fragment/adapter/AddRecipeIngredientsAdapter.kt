@@ -7,29 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.TextView
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import com.mnvsngv.cookpedia.fragment.adapter.listener.TextChangedListener
 import kotlinx.android.synthetic.main.add_ingredient_button.view.*
 import kotlinx.android.synthetic.main.fragment_add_ingredient.view.*
 import kotlinx.android.synthetic.main.fragment_add_step.view.content
-import android.widget.AdapterView
-import android.widget.TextView
-
-
 
 
 class AddRecipeIngredientsAdapter(
     private val mContext: Context,
     private val mValues: MutableList<RecipeIngredient>,
-    private val listener: RecipeIngredientsListener
+    private val listener: Listener
 ) : RecyclerView.Adapter<AddRecipeIngredientsAdapter.ViewHolder>() {
+
+    private val servingItems = mContext.resources.getStringArray(R.array.spinnerItems)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(viewType, parent, false)
-
-
 
         return ViewHolder(view)
     }
@@ -38,16 +35,21 @@ class AddRecipeIngredientsAdapter(
 
         if (position == mValues.size) {
             holder.mButton?.setOnClickListener {
-                if (mValues[position-1].name.isNotEmpty()) {
+                if (validateIngredient(mValues[position-1])) {
                     listener.onAddIngredient()
+                } else {
+                    Toast.makeText(mContext, R.string.invalid_ingredient, Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
             holder.nameChangedListener.updatePosition(position)
             holder.quantityChangedListener.updatePosition(position)
+            holder.servingChangedListener.updatePosition(position)
+
             val ingredient = mValues[position]
             holder.mContentView?.setText(ingredient.name, TextView.BufferType.EDITABLE)
             holder.mQuantityView?.text = ingredient.quantity
+            holder.mServingView?.setSelection(indexOfSpinnerElement(ingredient.serving))
 
             if (position == mValues.size - 1) {
                 holder.mContentView?.requestFocus()
@@ -67,16 +69,18 @@ class AddRecipeIngredientsAdapter(
         else R.layout.fragment_add_ingredient
     }
 
+    private fun validateIngredient(ingredient: RecipeIngredient): Boolean {
+        return (ingredient.name.isNotEmpty() && ingredient.quantity.isNotEmpty())
+    }
+
     private fun indexOfSpinnerElement(element: String): Int {
-        val items = mContext.resources.getStringArray(R.array.spinnerItems)
-        for (i in 0 until items.size) {
-            if (items[i] == element) return i
+        for (i in 0 until servingItems.size) {
+            if (servingItems[i] == element) return i
         }
         return 0
     }
 
-    // TODO Rename to Listener
-    interface RecipeIngredientsListener {
+    interface Listener {
         fun onAddIngredient()
     }
 
@@ -84,19 +88,40 @@ class AddRecipeIngredientsAdapter(
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mContentView: EditText? = mView.content
         val mQuantityView: TextView? = mView.quantity
-        val mServingView:Spinner? = mView.serving
+        val mServingView: Spinner? = mView.serving
         val mButton: ImageButton? = mView.addIngredientButton
         val nameChangedListener = TextChangedListener { position, s -> mValues[position].name = s }
         val quantityChangedListener = TextChangedListener { position, s -> mValues[position].quantity = s }
+        val servingChangedListener = SelectionListener { ingredientPosition, spinnerPosition ->
+            mValues[ingredientPosition].serving = servingItems[spinnerPosition]
+        }
 
         init {
             mContentView?.addTextChangedListener(nameChangedListener)
             mQuantityView?.addTextChangedListener(quantityChangedListener)
+            mServingView?.onItemSelectedListener = servingChangedListener
         }
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView?.text + "'"
         }
 
+    }
+
+    inner class SelectionListener(private val run: (ingredientPosition: Int, spinnerPosition: Int) -> Unit) : AdapterView.OnItemSelectedListener {
+
+        private var ingredientPosition = -1
+
+        fun updatePosition(newPosition: Int) {
+            ingredientPosition = newPosition
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            run(ingredientPosition, position)
+        }
     }
 }

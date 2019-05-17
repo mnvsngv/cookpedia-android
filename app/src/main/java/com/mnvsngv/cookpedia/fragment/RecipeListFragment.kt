@@ -20,7 +20,7 @@ import java.io.Serializable
 
 
 // TODO Rename RECIPES_KEY and RECIPE_KEY and rearrange to use them globally & sensibly
-const val RECIPES_KEY = "recipes"
+const val RECIPES_KEY = "user_recipes"
 
 // TODO Code cleanup
 class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.Listener {
@@ -41,7 +41,7 @@ class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.Lis
 //        recipe_recycler_view = view.findViewById(R.id.list)
         mSearchtext = view.findViewById(R.id.search_text)
 
-//        Setting the Layout for the Recycler view to display recipes
+//        Setting the Layout for the Recycler view to display user_recipes
 //        view.list.hasFixedSize()
         view.list.layoutManager = LinearLayoutManager(context)
         view.list.adapter = RecipeDisplayAdapter(context, recipeList, this)

@@ -63,7 +63,7 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         currentEmail?.let {
             db.collection(USERS_COLLECTION).document(currentEmail).get().addOnCompleteListener { task ->
                 val user = task.result?.toObject(User::class.java)
-                user?.let { backendListener.onReadAllRecipes(user.recipes) }
+                user?.let { backendListener.onReadAllRecipes(user.user_recipes) }
             }
         }
     }
@@ -114,7 +114,7 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         currentEmail?.let {
             db.collection(USERS_COLLECTION)
                 .document(currentEmail)
-                .update("recipes", FieldValue.arrayUnion(recipe))
+                .update("user_recipes", FieldValue.arrayUnion(recipe))
         }
     }
 

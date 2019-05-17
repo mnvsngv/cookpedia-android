@@ -3,12 +3,27 @@
                                              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
-                                             tools:context=".fragment.AddRecipeIngredientsFragment"
+                                             tools:context=".fragment.AddFragment"
 >
+    <TextView
+            android:text="@string/add_ingredients_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/header"
+            app:layout_constraintRight_toRightOf="parent" app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toTopOf="@id/list"
+            android:textSize="@dimen/header_size" android:textStyle="italic"
+            android:textColor="@android:color/primary_text_light"/>
+    <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/header"/>
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/list"
-            tools:listitem="@layout/fragment_add_ingredient"/>
+            android:layout_height="0dp" android:id="@+id/list"
+            tools:listitem="@layout/fragment_add_ingredient" app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     <android.support.design.widget.FloatingActionButton
             android:src="@drawable/ic_add_recipe_next_step_light"
             android:layout_width="wrap_content"

@@ -56,4 +56,6 @@
     <string name="ingredients">Ingredients</string>
     <string name="registration_failure">Registration failed! Username already exists!</string>
     <string name="login_failure"><![CDATA[Login failed! Check your username & password!]]></string>
+    <string name="add_ingredients_header"><![CDATA[Ingredients & quantities]]></string>
+    <string name="invalid_ingredient">Please enter all fields!</string>
 </resources>

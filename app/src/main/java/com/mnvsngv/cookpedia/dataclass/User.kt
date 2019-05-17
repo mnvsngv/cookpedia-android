@@ -4,11 +4,12 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.*
 
+// TODO Rename user_recipes
 data class User(
     val email: String = "",
     val username: String = "",
     val name: String = "",
-    val recipes: ArrayList<RecipeItem> = arrayListOf()
+    val user_recipes: ArrayList<RecipeItem> = arrayListOf()
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -22,7 +23,7 @@ data class User(
         parcel?.writeString(email)
         parcel?.writeString(username)
         parcel?.writeString(name)
-        parcel?.writeList(recipes)
+        parcel?.writeList(user_recipes)
     }
 
     override fun describeContents(): Int {

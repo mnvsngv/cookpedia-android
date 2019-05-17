@@ -15,7 +15,7 @@ import com.mnvsngv.cookpedia.fragment.adapter.AddRecipeIngredientsAdapter
 import kotlinx.android.synthetic.main.fragment_add_recipe_ingredients.view.*
 
 
-class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.RecipeIngredientsListener {
+class AddFragment : Fragment(), AddRecipeIngredientsAdapter.Listener {
 
     private val ingredients: MutableList<RecipeIngredient> = ArrayList()
     private lateinit var listener: AddRecipeIngredientsListener
@@ -31,7 +31,7 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
 
         with(view.list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = AddRecipeIngredientsAdapter(context,ingredients, this@AddRecipeIngredientsFragment)
+            adapter = AddRecipeIngredientsAdapter(context,ingredients, this@AddFragment)
         }
 
         view.addIngredientsFab.setOnClickListener { listener.afterAddIngredients(ingredients) }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.Toolbar
+import android.view.View
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
@@ -35,6 +36,7 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
         list?.layoutManager = GridLayoutManager(this,2)
         list?.adapter = RecipeGridViewAdapter(this, recipes, this)
 
+        progressBar.visibility = View.VISIBLE
         backend.readUserRecipes()
 
         addRecipeFab.setOnClickListener {
@@ -50,6 +52,7 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
         this.recipes.clear()
         this.recipes.addAll(recipes)
         list?.adapter?.notifyDataSetChanged()
+        progressBar.visibility = View.INVISIBLE
     }
 
     override fun onRecipeClick(recipe: RecipeItem) {

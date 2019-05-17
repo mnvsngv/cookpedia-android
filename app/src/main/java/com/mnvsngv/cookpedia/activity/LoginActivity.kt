@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +25,7 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
 
         loginButton.setOnClickListener {
             if (areInputsValid()) {
+                progressBar.visibility = View.VISIBLE
                 backend.loginUser(emailInput.text.toString(), passwordInput.text.toString())
             }
         }
