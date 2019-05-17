@@ -50,7 +50,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recipe_name_hint">Recipe Name…</string>
     <string name="recipeText">My Magic Recipes</string>
-    <string name="ingredient_hint">Next Ingredient...</string>
+    <string name="ingredient_hint">Next Ingredient…</string>
     <string name="quantity_hint">Qty</string>
     <string name="serving_text">serving</string>
     <string name="ingredients">Ingredients</string>
@@ -59,4 +59,5 @@
     <string name="add_ingredients_header"><![CDATA[Ingredients & quantities]]></string>
     <string name="invalid_ingredient">Please enter all fields!</string>
     <string name="add_photo_header">Add a photo?</string>
+    <string name="select_ingredients">Recipes with all these…</string>
 </resources>

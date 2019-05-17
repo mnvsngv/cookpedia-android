@@ -5,11 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
@@ -31,13 +29,18 @@ class SelectIngredientsFragment : Fragment(), BackendListener, SelectIngredients
     ): View? {
         val view = inflater.inflate(R.layout.fragment_select_ingredients, container, false)
 
-        ingredients.clear()
-        backend.getAllIngredients()
+        view.progressBar.visibility = View.VISIBLE
+        selectedIngredients.clear()
+        if (ingredients.size == 0) backend.getAllIngredients()
+        else view.progressBar.visibility = View.VISIBLE
 
         view.list?.layoutManager = GridLayoutManager(this.context, 2)
         view.list?.adapter = SelectIngredientsAdapter(ingredients, this)
 
-        view.searchRecipeFab.setOnClickListener { listener.onIngredientsSelected(selectedIngredients.toList()) }
+        view.searchRecipeFab.setOnClickListener {
+            view?.progressBar?.visibility = View.VISIBLE
+            listener.onIngredientsSelected(selectedIngredients.toList())
+        }
 
         return view
     }
@@ -50,10 +53,10 @@ class SelectIngredientsFragment : Fragment(), BackendListener, SelectIngredients
     override fun onGetAllIngredients(ingredients: List<RecipeIngredient>) {
         this.ingredients.addAll(ingredients)
         view?.list?.adapter?.notifyDataSetChanged()
+        view?.progressBar?.visibility = View.INVISIBLE
     }
 
     override fun onIngredientChecked(ingredient: RecipeIngredient, selected: Boolean) {
-        Log.i("tagger", ingredient.name)
         if (selected) selectedIngredients.add(ingredient)
         else selectedIngredients.remove(ingredient)
     }

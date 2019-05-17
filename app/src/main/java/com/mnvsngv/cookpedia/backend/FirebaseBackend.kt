@@ -122,25 +122,36 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
         db.collection(RECIPES_COLLECTION)
             .get()
             .addOnSuccessListener { result ->
+                val ingredientNames = HashSet<String>()
                 val ingredients = HashSet<RecipeIngredient>()
                 for (document in result) {
                     val recipeItem = document.toObject(RecipeItem::class.java)
-                    ingredients.addAll(recipeItem.ingredients)
+                    for (ingredient in recipeItem.ingredients) {
+                        if (!ingredientNames.contains(ingredient.name)) {
+                            ingredients.add(ingredient)
+                            ingredientNames.add(ingredient.name)
+                        }
+                    }
                 }
-                backendListener.onGetAllIngredients(ingredients.toList())
+                backendListener.onGetAllIngredients(ingredients.toList().sortedBy { it.name })
             }
     }
 
     override fun searchRecipesUsing(ingredientsToSearch: List<RecipeIngredient>) {
+        val ingredientNames = ingredientsToSearch.map { it.name }
+
         db.collection(RECIPES_COLLECTION)
             .get()
             .addOnSuccessListener { snapshot ->
                 val validRecipes = ArrayList<RecipeItem>()
                 for (document in snapshot) {
                     val recipe = document.toObject(RecipeItem::class.java)
-                    if (recipe.ingredients.containsAll(ingredientsToSearch)) {
+                    val candidateIngredients = recipe.ingredients.map { it.name }
+
+                    if (candidateIngredients.containsAll(ingredientNames)) {
                         validRecipes.add(recipe)
                     }
+
                 }
                 backendListener.onSearchRecipesUsing(validRecipes)
             }

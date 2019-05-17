@@ -7,9 +7,31 @@
         android:layout_height="match_parent"
         tools:context=".activity.SearchRecipeActivity">
 
+    <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar" app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toBottomOf="@id/header"
+            android:visibility="invisible" android:indeterminate="true"/>
+    <TextView
+            android:text="@string/select_ingredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/header"
+            app:layout_constraintRight_toRightOf="parent" app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toTopOf="@id/divider"
+            android:textSize="@dimen/header_size" android:textStyle="italic"
+            android:textColor="@android:color/primary_text_light" android:layout_margin="@dimen/form_padding"/>
+    <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/header"/>
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/list"/>
+            android:layout_height="0dp" android:id="@+id/list" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"/>
 
     <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
