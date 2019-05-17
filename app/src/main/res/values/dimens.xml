@@ -17,4 +17,5 @@
     <dimen name="recipe_name_display_size">36sp</dimen>
     <dimen name="ingredient_list_height">36sp</dimen>
     <dimen name="dialog_header">24sp</dimen>
+    <dimen name="view_step_image_height">100sp</dimen>
 </resources>

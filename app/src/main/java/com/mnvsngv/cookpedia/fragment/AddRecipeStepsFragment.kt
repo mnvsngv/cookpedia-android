@@ -44,7 +44,10 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_recipe_list, container, false)
-        if (steps.size == 0) steps.add(RecipeStep("", "", steps.size + 1))
+        if (steps.size == 0) {
+            photoHelpers.add(PhotoCapture(steps.size))
+            steps.add(RecipeStep("", "", steps.size + 1))
+        }
 
         // Set the adapter
         if (view.list is RecyclerView) {
@@ -82,11 +85,6 @@ class AddRecipeStepsFragment : Fragment(), BackendListener, AddRecipeStepsAdapte
         val stepIndex = step.stepNumber-1
         val helper = photoHelpers[stepIndex]
         startActivityForResult(helper.newIntent(this.context as Context) {
-//            stepsListener.afterAddPhoto(helper.photoUri)
-//            with ((view?.recipeImage) as ImageView) {
-//                Glide.with(this.context as Context).load(photoHelper.photoUri).into(this)
-//                alpha = 1f
-//            }
             steps[stepIndex].imageSource = helper.photoUri.toString()
             view?.list?.adapter?.notifyDataSetChanged()
         }, stepIndex)
