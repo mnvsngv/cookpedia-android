@@ -62,11 +62,17 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
         startActivity(intent)
     }
 
+//    override fun onGetAllIngredients(ingredients: List<RecipeIngredient>) {
+//        this.ingredients.clear()
+//        this.ingredients.addAll(ingredients)
+//        intent.(INGREDIENTS_KEY,ingredients)
+//    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 ADD_RECIPE -> {
-                    backend.readAllRecipes()
+                    backend.readUserRecipes()
                 }
             }
         }
