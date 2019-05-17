@@ -55,10 +55,6 @@ class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.Lis
         recipeList = arguments?.getSerializable(RECIPES_KEY) as List<RecipeItem>
     }
 
-    override fun notifyChange() {
-//        recipeAdapter?.notifyDataSetChanged()
-    }
-
     override fun onRecipeClick(recipe: RecipeItem) {
         val intent = Intent(this.context, RecipeViewActivity::class.java)
         intent.putExtra(RECIPE_KEY, recipe)

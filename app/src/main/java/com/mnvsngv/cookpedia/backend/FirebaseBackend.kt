@@ -1,7 +1,6 @@
 package com.mnvsngv.cookpedia.backend
 
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,7 +14,6 @@ private const val USERS_COLLECTION = "Users"
 private const val RECIPES_COLLECTION = "Recipes"
 
 
-// TODO Code cleanup
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
     private val auth = FirebaseAuth.getInstance()
@@ -25,10 +23,8 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
     override fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("auth", "loginUserWithEmail:success")
                 backendListener.onLoginSuccess()
             } else {
-                Log.d("auth", "loginUserWithEmail:failure")
                 backendListener.onLoginFailure()
             }
         }
@@ -43,34 +39,31 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
                         backendListener.onRegisterSuccess()
                     }
             } else {
-                Log.w("db", "createUserWithEmail:failure", task.exception)
                 backendListener.onRegisterFailure()
             }
         }
     }
 
     override fun readAllRecipes() {
-        var recipeCollection = db.collection(RECIPES_COLLECTION)
-
-        recipeCollection.get().addOnSuccessListener { result ->
-            val recipes = ArrayList<RecipeItem>()
-            for (document in result) {
-                val recipeItem = document.toObject(RecipeItem::class.java)
-                recipes.add(recipeItem)
+        db.collection(RECIPES_COLLECTION)
+            .get()
+            .addOnSuccessListener { result ->
+                val recipes = ArrayList<RecipeItem>()
+                for (document in result) {
+                    val recipeItem = document.toObject(RecipeItem::class.java)
+                    recipes.add(recipeItem)
+                }
+                backendListener.onReadAllRecipes(recipes)
             }
-            backendListener.onReadAllRecipes(recipes)
-        }
     }
 
     override fun readUserRecipes() {
-        var current_user = auth.currentUser?.email
+        val currentEmail = auth.currentUser?.email
 
-        current_user?.let {
-            db.collection(USERS_COLLECTION).document(current_user).get().addOnCompleteListener { task ->
-                var user = task.result?.toObject(User::class.java)
-                user?.let {
-                    backendListener.onReadAllRecipes(it.user_recipes)
-                }
+        currentEmail?.let {
+            db.collection(USERS_COLLECTION).document(currentEmail).get().addOnCompleteListener { task ->
+                val user = task.result?.toObject(User::class.java)
+                user?.let { backendListener.onReadAllRecipes(user.recipes) }
             }
         }
     }
@@ -116,15 +109,16 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
     }
 
     override fun updateUserRecipes(recipe: RecipeItem) {
-        var current_user = auth.currentUser?.email
+        val currentEmail = auth.currentUser?.email
 
-        current_user?.let {
-            db.collection(USERS_COLLECTION).document(current_user).update("user_recipes", FieldValue.arrayUnion(recipe))
+        currentEmail?.let {
+            db.collection(USERS_COLLECTION)
+                .document(currentEmail)
+                .update("recipes", FieldValue.arrayUnion(recipe))
         }
     }
 
     override fun getAllIngredients() {
-
         db.collection(RECIPES_COLLECTION)
             .get()
             .addOnSuccessListener { result ->

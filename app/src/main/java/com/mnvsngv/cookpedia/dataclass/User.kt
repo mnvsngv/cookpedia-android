@@ -8,7 +8,7 @@ data class User(
     val email: String = "",
     val username: String = "",
     val name: String = "",
-    val user_recipes: ArrayList<RecipeItem> = arrayListOf()
+    val recipes: ArrayList<RecipeItem> = arrayListOf()
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -22,7 +22,7 @@ data class User(
         parcel?.writeString(email)
         parcel?.writeString(username)
         parcel?.writeString(name)
-        parcel?.writeList(user_recipes)
+        parcel?.writeList(recipes)
     }
 
     override fun describeContents(): Int {

@@ -46,10 +46,6 @@ class RecipeGridFragment : Fragment(), BackendListener, RecipeGridViewAdapter.Re
         backend = BackendFactory.getInstance(this)
     }
 
-    override fun notifyChange() {
-        recipeAdapter?.notifyDataSetChanged()
-    }
-
     override fun onRecipeClick(recipe: RecipeItem) {
         val intent = Intent(this.context, RecipeViewActivity::class.java)
         intent.putExtra("HOOYOO", recipe)
