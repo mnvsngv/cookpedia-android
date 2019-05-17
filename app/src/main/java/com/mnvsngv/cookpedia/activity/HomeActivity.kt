@@ -31,6 +31,7 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_bar_home)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar.title = getString(R.string.app_name)
         setSupportActionBar(toolbar)
 
         list?.layoutManager = GridLayoutManager(this,2)

@@ -6,12 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
-import com.mnvsngv.cookpedia.dataclass.RecipeStep
 import kotlinx.android.synthetic.main.ingredients_list_view.view.*
-import kotlinx.android.synthetic.main.recipe_step_view.view.*
 
 
 class IngredientsListViewAdapter(
@@ -31,8 +28,7 @@ class IngredientsListViewAdapter(
 
         val item = mValues[position]
         holder.mIngredientName?.text = item.name
-        holder.mIngredientQty?.text = item.quantity
-        holder.mIngredientServing?.text = item.serving
+        holder.mIngredientAmount?.text = ", " + item.quantity + " " + item.serving
         Log.i("tagger", item.toString())
         with(holder.mView) {
             tag = item
@@ -44,8 +40,7 @@ class IngredientsListViewAdapter(
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
             val mIngredientName = mView.ingName
-            val mIngredientQty = mView.ingQuantity
-            val mIngredientServing = mView.ingServing
+            val mIngredientAmount = mView.ingAmount
 
 //        override fun toString(): String {
 //            return super.toString() + " '" + mIngredientName?.text + "'"
