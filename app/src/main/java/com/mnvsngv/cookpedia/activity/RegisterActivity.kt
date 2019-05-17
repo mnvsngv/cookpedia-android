@@ -1,6 +1,5 @@
 package com.mnvsngv.cookpedia.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -14,6 +13,9 @@ import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 import kotlinx.android.synthetic.main.activity_register.*
+import org.jetbrains.anko.clearTop
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 
 
 class RegisterActivity : AppCompatActivity(), BackendListener, TextView.OnEditorActionListener {
@@ -85,7 +87,7 @@ class RegisterActivity : AppCompatActivity(), BackendListener, TextView.OnEditor
 
 
     override fun onRegisterSuccess() {
-        startActivity(Intent(this, HomeActivity::class.java))
+        startActivity(intentFor<HomeActivity>().newTask().clearTop())
         finish()
     }
 

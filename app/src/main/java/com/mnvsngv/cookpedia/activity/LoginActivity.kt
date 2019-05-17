@@ -31,6 +31,7 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
         registerButton.setOnClickListener {
             val registerIntent = Intent(this, RegisterActivity::class.java)
             startActivity(registerIntent)
+            finish()
         }
 
         // Initiate login when the user presses enter when on the password field
@@ -51,6 +52,7 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
     override fun onLoginSuccess() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 
