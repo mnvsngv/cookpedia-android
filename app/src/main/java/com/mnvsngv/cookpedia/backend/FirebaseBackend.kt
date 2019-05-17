@@ -119,42 +119,52 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
     }
 
     override fun getAllIngredients() {
-        db.collection(RECIPES_COLLECTION)
-            .get()
-            .addOnSuccessListener { result ->
-                val ingredientNames = HashSet<String>()
-                val ingredients = HashSet<RecipeIngredient>()
-                for (document in result) {
-                    val recipeItem = document.toObject(RecipeItem::class.java)
-                    for (ingredient in recipeItem.ingredients) {
-                        if (!ingredientNames.contains(ingredient.name)) {
-                            ingredients.add(ingredient)
-                            ingredientNames.add(ingredient.name)
+        auth.currentUser?.email?.let {
+            db.collection(USERS_COLLECTION)
+                .document(it)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    val user = snapshot.toObject(User::class.java)
+                    user?.let {
+                        val ingredientNames = HashSet<String>()
+                        val ingredients = HashSet<RecipeIngredient>()
+                        for (recipe in user.user_recipes) {
+                            for (ingredient in recipe.ingredients) {
+                                if (!ingredientNames.contains(ingredient.name)) {
+                                    ingredients.add(ingredient)
+                                    ingredientNames.add(ingredient.name)
+                                }
+                            }
                         }
+                        backendListener.onGetAllIngredients(ingredients.toList().sortedBy { it.name })
                     }
                 }
-                backendListener.onGetAllIngredients(ingredients.toList().sortedBy { it.name })
-            }
+        }
     }
 
     override fun searchRecipesUsing(ingredientsToSearch: List<RecipeIngredient>) {
         val ingredientNames = ingredientsToSearch.map { it.name }
 
-        db.collection(RECIPES_COLLECTION)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val validRecipes = ArrayList<RecipeItem>()
-                for (document in snapshot) {
-                    val recipe = document.toObject(RecipeItem::class.java)
-                    val candidateIngredients = recipe.ingredients.map { it.name }
+        auth.currentUser?.email?.let {
+            db.collection(USERS_COLLECTION)
+                .document(it)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    val user = snapshot.toObject(User::class.java)
+                    user?.let {
+                        val validRecipes = ArrayList<RecipeItem>()
+                        for (recipe in user.user_recipes) {
+                            val candidateIngredients = recipe.ingredients.map { it.name }
 
-                    if (candidateIngredients.containsAll(ingredientNames)) {
-                        validRecipes.add(recipe)
+                            if (candidateIngredients.containsAll(ingredientNames)) {
+                                validRecipes.add(recipe)
+                            }
+
+                        }
+                        backendListener.onSearchRecipesUsing(validRecipes)
                     }
-
                 }
-                backendListener.onSearchRecipesUsing(validRecipes)
-            }
+        }
     }
 
     override fun loadImageFrom(path: String, run: (uri: Uri) -> Unit) {

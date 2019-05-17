@@ -33,7 +33,6 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
         registerButton.setOnClickListener {
             val registerIntent = Intent(this, RegisterActivity::class.java)
             startActivity(registerIntent)
-            finish()
         }
 
         // Initiate login when the user presses enter when on the password field
@@ -43,6 +42,7 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_GO) {
             if (areInputsValid()) {
+                progressBar.visibility = View.VISIBLE
                 backend.loginUser(emailInput.text.toString(), passwordInput.text.toString())
             }
             return true  // Event handled!
