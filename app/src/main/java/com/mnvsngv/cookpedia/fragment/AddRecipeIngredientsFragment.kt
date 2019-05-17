@@ -85,6 +85,7 @@ class AddRecipeIngredientsFragment : Fragment(), AddRecipeIngredientsAdapter.Rec
     }
 
 
+    // TODO Rename to Listener
     interface AddRecipeIngredientsListener {
         fun afterAddIngredients(ingredients: List<RecipeIngredient>)
     }

@@ -16,7 +16,7 @@ import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.singleton.BackendFactory
 import kotlinx.android.synthetic.main.recipelist_item.view.*
 
-//Adapter class to display the recycler view
+// TODO Code cleanup
 class RecipeDisplayAdapter(
     private val context: Context?,
     private val recipeList: List<RecipeItem>,
@@ -59,7 +59,7 @@ class RecipeDisplayAdapter(
     }
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var recipeName: TextView = view.recipe_name
-        var recipeImage: ImageView = view.dish_image
+        val recipeName: TextView = view.recipe_name
+        val recipeImage: ImageView = view.dish_image
     }
 }

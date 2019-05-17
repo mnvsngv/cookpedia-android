@@ -6,8 +6,8 @@ import java.util.ArrayList
 
 data class User(
     val email: String = "",
-    val username: String="",
-    val name: String="",
+    val username: String = "",
+    val name: String = "",
     val user_recipes: ArrayList<RecipeItem> = arrayListOf()
 ) : Parcelable {
 

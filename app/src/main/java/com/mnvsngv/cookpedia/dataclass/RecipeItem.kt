@@ -4,7 +4,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.*
 
-//Recipe Item dataclass
+
+// TODO Manav: See if parcelable can be removed?
 data class RecipeItem(
     val name: String = "",
     var image: String = "",

@@ -3,21 +3,22 @@ package com.mnvsngv.cookpedia.backend
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
 import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.dataclass.User
 
+
 private const val USERS_COLLECTION = "Users"
 private const val RECIPES_COLLECTION = "Recipes"
-private var recipeList: List<RecipeItem> = arrayListOf()
-private lateinit var recipeCollection : Query
-private lateinit var docRef: DocumentReference
 
+// TODO Remove this variable
+private var recipeList: List<RecipeItem> = arrayListOf()
+
+
+// TODO Code cleanup
 class FirebaseBackend(private val backendListener: BackendListener) : Backend {
 
     private val auth = FirebaseAuth.getInstance()
@@ -71,9 +72,8 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
             db.collection(USERS_COLLECTION).document(current_user).get().addOnCompleteListener { task ->
                 var user = task.result?.toObject(User::class.java)
                 user?.let {
-                    recipeList = it.user_recipes
+                    backendListener.onReadAllRecipes(it.user_recipes)
                 }
-                backendListener.onReadAllRecipes(recipeList)
             }
         }
     }

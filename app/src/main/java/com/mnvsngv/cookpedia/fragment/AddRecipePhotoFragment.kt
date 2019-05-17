@@ -59,7 +59,7 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
     }
 
     override fun onRecipeUploadSuccess() {
-//        photoHelper.deletePhoto()
+        photoHelper.deletePhoto()
         listener.afterRecipeUpload()
     }
 
@@ -74,8 +74,8 @@ class AddRecipePhotoFragment : Fragment(), BackendListener {
     }
 
 
+    // TODO Change to Listener
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun afterAddPhoto(uri: Uri)
         fun afterRecipeUpload()
     }

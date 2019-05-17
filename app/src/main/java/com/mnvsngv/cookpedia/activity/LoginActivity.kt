@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity(), TextView.OnEditorActionListener, Back
         passwordInput.setOnEditorActionListener(this)
     }
 
-    // Handle ENTER button pressed on the password field
+    // TODO Handle ENTER button pressed on the password field
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_GO) {
             if (areInputsValid()) {

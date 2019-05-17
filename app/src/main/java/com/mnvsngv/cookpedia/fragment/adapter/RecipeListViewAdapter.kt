@@ -53,6 +53,7 @@ class RecipeListViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
+    // TODO Rename variables
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: TextView? = mView.stepNumber
         val mContentView: TextView? = mView.stepDescription

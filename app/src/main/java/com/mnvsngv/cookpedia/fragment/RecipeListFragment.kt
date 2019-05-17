@@ -22,6 +22,7 @@ import java.io.Serializable
 // TODO Rename RECIPES_KEY and RECIPE_KEY and rearrange to use them globally & sensibly
 const val RECIPES_KEY = "recipes"
 
+// TODO Code cleanup
 class RecipeListFragment : Fragment(), BackendListener, RecipeDisplayAdapter.Listener {
 
     private val backend = BackendFactory.getInstance(this)

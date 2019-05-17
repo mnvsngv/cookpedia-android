@@ -94,10 +94,12 @@ class AddRecipeIngredientsAdapter(
         return 0
     }
 
+    // TODO Rename to Listener
     interface RecipeIngredientsListener {
         fun onAddIngredient()
     }
 
+    // TODO Rename variables
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mContentView: TextView? = mView.content
         val mQuantityView: TextView? = mView.quantity

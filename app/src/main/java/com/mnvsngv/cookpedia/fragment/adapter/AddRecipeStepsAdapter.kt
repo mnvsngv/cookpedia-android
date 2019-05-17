@@ -52,6 +52,7 @@ class AddRecipeStepsAdapter(
         return if (position == mValues.size) R.layout.add_step_button else R.layout.fragment_add_step
     }
 
+    // TODO Rename variables
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: TextView? = mView.item_number
         val mContentView: TextView? = mView.content
@@ -62,6 +63,7 @@ class AddRecipeStepsAdapter(
         }
     }
 
+    // TODO Rename to Listener
     interface RecipeStepAdapterListener {
         fun onAddStep()
     }

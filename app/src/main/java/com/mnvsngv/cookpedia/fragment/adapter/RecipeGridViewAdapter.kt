@@ -49,7 +49,6 @@ class RecipeGridViewAdapter(
                 Glide.with(holder.recipeImage.context).load(it).into(holder.recipeImage)
             }
         }
-
         holder.itemView.setOnClickListener {
             listener.onRecipeClick(recipe)
         }
@@ -58,12 +57,14 @@ class RecipeGridViewAdapter(
 
     override fun getItemCount(): Int = recipeList.size
 
+    // TODO Rename to Listener
     interface RecipeDisplayAdapterListener {
         fun onRecipeClick(recipe: RecipeItem)
     }
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        var recipeName: TextView = mView.recipeName
-        var recipeImage: ImageView = mView.imageRecipe
+    // TODO Rename variables
+    inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
+        val recipeName: TextView = mView.recipeName
+        val recipeImage: ImageView = mView.imageRecipe
     }
 }
