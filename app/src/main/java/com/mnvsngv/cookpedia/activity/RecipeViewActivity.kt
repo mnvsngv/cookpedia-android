@@ -12,15 +12,6 @@ import com.mnvsngv.cookpedia.dataclass.RecipeItem
 import com.mnvsngv.cookpedia.fragment.adapter.RecipeListViewAdapter
 import kotlinx.android.synthetic.main.activity_recipe_view.*
 import com.mnvsngv.cookpedia.fragment.adapter.IngredientsListViewAdapter
-import kotlinx.android.synthetic.main.dialog_ingredients_listview.view.*
-import android.R.array
-import android.content.DialogInterface
-import android.widget.ListAdapter
-import android.widget.ListView
-import android.widget.ArrayAdapter
-import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
-import kotlinx.android.synthetic.main.select_ingredient.*
-
 
 class RecipeViewActivity : AppCompatActivity() {
 
@@ -32,7 +23,7 @@ class RecipeViewActivity : AppCompatActivity() {
         recipeName.text = recipe.name
         Log.i("RecipeViewActivity", "Steps: ${recipe.steps.size}")
         list.layoutManager = LinearLayoutManager(this)
-        list.adapter = RecipeListViewAdapter(recipe.steps)
+        list.adapter = RecipeListViewAdapter(this,recipe.steps)
 
         viewIngredientsFab.setOnClickListener {
 

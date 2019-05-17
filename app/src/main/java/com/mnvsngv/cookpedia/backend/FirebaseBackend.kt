@@ -16,8 +16,6 @@ private const val RECIPES_COLLECTION = "Recipes"
 
 // TODO Remove this variable
 private var recipeList: List<RecipeItem> = arrayListOf()
-private lateinit var recipeCollection : Query
-private lateinit var docRef: DocumentReference
 
 
 // TODO Code cleanup
@@ -74,25 +72,25 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
             db.collection(USERS_COLLECTION).document(current_user).get().addOnCompleteListener { task ->
                 var user = task.result?.toObject(User::class.java)
                 user?.let {
-                    recipeList = it.user_recipes
+                    backendListener.onReadAllRecipes(it.user_recipes)
                 }
-                backendListener.onReadAllRecipes(recipeList)
             }
         }
     }
 
     override fun addRecipe(recipe: RecipeItem) {
         val photoUri = Uri.parse(recipe.image)
+        val storageRef = storage.reference
+
 
         if (photoUri.lastPathSegment != null) {
             recipe.image = photoUri.lastPathSegment as String
         }
-        val storageRef = storage.reference
 
         db.collection(RECIPES_COLLECTION)
             .add(recipe)
             .addOnSuccessListener { documentReference ->
-                val id = documentReference.id
+                val id = auth.currentUser?.email
                 val photoRef = storageRef.child("$id/${photoUri.lastPathSegment}")
                 photoRef.putFile(photoUri)
                     .addOnCompleteListener {
@@ -137,6 +135,15 @@ class FirebaseBackend(private val backendListener: BackendListener) : Backend {
                 }
                 backendListener.onSearchRecipesUsing(validRecipes)
             }
+    }
+
+    override fun loadImageFrom(path: String, run: (uri: Uri) -> Unit) {
+        auth.currentUser?.email?.let {
+            storage.reference.child(it).child(path).downloadUrl.addOnSuccessListener {uri ->
+                run(uri)
+            }
+        }
+
     }
 
 }

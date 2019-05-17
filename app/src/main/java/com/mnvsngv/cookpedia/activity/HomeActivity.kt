@@ -7,6 +7,7 @@ import android.os.Parcelable
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import com.mnvsngv.cookpedia.R
 import com.mnvsngv.cookpedia.backend.BackendListener
 import com.mnvsngv.cookpedia.dataclass.RecipeIngredient
@@ -58,6 +59,7 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
     }
 
     override fun onReadAllRecipes(recipes: List<RecipeItem>) {
+        Log.i("tagger", "onReadAllRecipes")
         this.recipes.clear()
         this.recipes.addAll(recipes)
         list?.adapter?.notifyDataSetChanged()
@@ -79,7 +81,7 @@ class HomeActivity : AppCompatActivity(), BackendListener, RecipeGridViewAdapter
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 ADD_RECIPE -> {
-                    backend.readAllRecipes()
+                    backend.readUserRecipes()
                 }
             }
         }
